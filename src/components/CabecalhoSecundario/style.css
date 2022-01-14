@@ -1,0 +1,151 @@
+@import url('../../assets/temas.css');
+
+.Cabecalho {
+    position: fixed;
+    display: flex;
+    width: 100vw;
+    align-items: center;
+    justify-content: space-around;
+    height: 50px;
+    background-color: var(--cabecaljo-color);
+    z-index: 1000;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.Cabecalho-Logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.Cabecalho-Logo img {
+    width: 38px;
+    height: 38px;
+}
+
+.Cabecalho-Btn-Menu {
+    display: none;
+    color: #fff;
+}
+
+.Cabecalho-Ul {    
+    gap: 1rem;
+}
+
+.Cabecalho-Ul svg {
+    height: 16px;
+    width: 16px;
+}
+
+.Cabecalho-Li {
+    list-style: none;
+    padding: .2rem .5rem;
+    text-shadow: var(--sombra-texto);
+    z-index: 800;
+}
+
+.Cabecalho-Li a {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    color: #fff;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--underline-li-color);  
+    /* text-decoration-color: #fff; */
+    font-family: var(--font-li);
+    transition: all 1s;
+}
+
+.Cabecalho-Li a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--underline-li-color);  
+}
+
+
+
+@media (max-width: 768px) {
+    .Cabecalho{
+        justify-content: space-between;
+        padding: 0 1rem;        
+    }
+
+    .Cabecalho-Ul {
+        visibility: hidden;
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        gap: 0px;
+        top: calc(50px + 2rem);
+        height: 0px;        
+        right: 2rem;
+        left: 2rem;                  
+        background-color: #202020;
+        border-radius: 5px;
+        overflow-y: hidden;
+        transition: .2s;
+        z-index: 1000;
+    }
+
+    .Cabecalho-Li {
+        width: 80%;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+        padding: 1rem 0;
+    }
+
+    .Cabecalho-Li a:hover {
+        text-decoration: none;
+    }  
+
+    .Cabecalho-Btn-Menu {
+        display: flex;
+        padding: .5rem 1rem;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+
+    #Cabecalho-Nav.Active .Cabecalho-Ul {
+        visibility: visible;
+        height: auto;
+        padding: 0 0 16px 0;
+    }
+
+    #hamburger {
+        display: block;
+        width: 20px;
+        border-top: 2px solid;
+        transition: .2s;
+        z-index: 1100;
+    }
+
+    #hamburger::after,  #hamburger::before {
+        position: relative;
+        display: block;
+        content: '';
+        width: 20px;
+        height: 2px;
+        background: currentColor;
+        margin-top: 5px;
+        transition: .2s;
+
+    }
+
+    #Cabecalho-Nav.Active #hamburger {
+        border-color: transparent;
+    }
+
+    #Cabecalho-Nav.Active #hamburger::before {
+        transform: rotate(135deg);
+    }
+
+    #Cabecalho-Nav.Active #hamburger::after {
+        transform: rotate(-135deg);
+        top: -7px;
+        
+    }
+}

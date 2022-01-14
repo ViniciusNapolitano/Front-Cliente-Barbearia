@@ -1,0 +1,81 @@
+@import url('../../assets/temas.css');
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+.Inicio {
+    display: flex;
+    margin: auto;
+    height: 70vh;
+    width: 100%;
+    background-image: url('../../assets/images/banner-inicio-desktop.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.Inicio-Pelicula {
+    position: relative;
+    width: 100%;
+    height: inherit;
+    background-color: rgba(0, 0, 0, .1);
+    box-shadow: 0 0 50px rgba(0,0,0,0.9) inset;
+    padding-top: 2rem;
+}
+
+.Apresentacao-container-titulos {
+    width: 100%;
+    margin-top: 70px;
+    text-align: center;
+    color: #fff;
+}
+
+.Apresentacao-container-titulos h1 {
+    font-family: 'Lobster', cursive;
+    font-size: 3rem;
+    font-style: italic;
+    text-shadow: 0 0 0.4em #2100dd;
+    text-shadow: 0 0 0.4em #000;
+    color: #fff;
+    transform: rotate(-20deg);
+    z-index: 100;
+}
+
+.Apresentacao-container-agendamento {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 4rem;
+    bottom: 7rem;
+}
+
+.Apresentacao-btn-agendamento {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 100%;
+    border-radius: 5px;
+    font-size: 2rem;
+    background-color: #00c943;
+    text-shadow: var(--sombra-texto);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    .Inicio {
+        height: calc(80vh - 50px);
+        background-image: url('../../assets/images/banner-inicio-mobile.jpg');
+    }
+
+}
+
+@media (max-width: 400px) {
+    .Apresentacao-container-agendamento {
+        bottom: 3rem;
+    }
+
+    .Apresentacao-container-titulos h1 {
+        font-size: 2.5rem;
+    }
+}

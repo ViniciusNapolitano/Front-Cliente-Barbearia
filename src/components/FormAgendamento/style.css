@@ -1,0 +1,163 @@
+@import url('../../assets/temas.css');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.FormAgendamento-section {
+    height: auto;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    color: #000;
+    padding: 114px 0 64px 0;
+}
+
+.FormAgendamento-section h1 {
+    width: 100%;
+    height: 54px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 400;
+    font-size: 22pt;
+    text-transform: uppercase;
+    border-bottom: 2px solid #B78865;
+}
+
+.FormAgendamento-form {
+    width: 964px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 16px;
+    margin: auto;
+    padding: 32px 0;
+    /* border: 2px solid steelblue; */
+}
+
+.FormAgendamento-div-foto-barbeiro {
+    width: auto;
+    height: auto;
+    /* background-color: aqua; */
+    object-fit: cover;
+    overflow: hidden;
+    padding: 5px;
+}
+
+.FormAgendamento-div-formata-foto-barbeiro {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    display: flex;
+    margin: auto;
+    background-color: #B78865;
+    padding: 2px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 2px solid #B78865;
+    box-shadow: 0 0 10px #B78865;
+}
+
+.FormAgendamento-foto-barbeiro {
+    position: absolute;
+    width: 300px;
+    right: -60px;
+    top: -0px;
+}
+
+.FormAgendamento-select, option {
+    border: none;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .4);
+}
+
+.FormAgendamento-form > *{
+    /* background-color: tan; */
+    width: 400px;
+    padding: 8px;
+    font-size: 16pt;
+    border-radius: 5px;
+}
+
+.FormAgendamento-form input {
+    border: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .4);
+
+}
+
+.FormAgendamento-div-calendar {
+    padding: 0;
+}
+
+.FormAgendamento-div-calendar .FormAgendamento-calendar {
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .4);
+}
+
+abbr {
+    text-decoration: none;
+}
+
+.FormAgendamento-espacamento {
+    margin-top: 8px;
+}
+
+.FormAgendamento-button {
+    color: #fff;
+    border: none;
+    background-color: #00c943;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+    text-shadow: var(--sombra-texto);
+    text-transform: uppercase;
+    margin-top: 24px;
+    cursor: pointer;
+}
+
+li {
+    border: 2px solid teal;
+    margin: 4px;
+    list-style: none;
+}
+
+@media (max-width: 768px) {
+    .FormAgendamento-section {
+        padding: 82px 0 64px 0;
+    }
+
+    .FormAgendamento-section h1 {
+        font-size: 1.5rem;
+        width: auto;
+        height: 70px;
+        padding-bottom: 8px;
+        text-align: center;
+        margin: 0 16px;
+    }
+
+    .FormAgendamento-form {
+        width: 100%;
+        align-items: center;
+        padding: 0 16px;
+        margin-top: 16px;
+    }
+
+    .FormAgendamento-form > * {
+        width: 100%;
+    }
+
+    .FormAgendamento-div-formata-foto-barbeiro {
+        width: 170px;
+        height: 170px;
+    }
+}
+
+@media (max-width: 400px) {
+    .FormAgendamento-section h1 {
+        height: 54px;
+        font-size: 1.2rem;
+    }
+
+    abbr {
+        font-size: .7rem;
+    }
+}

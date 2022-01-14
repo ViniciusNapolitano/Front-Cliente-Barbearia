@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+    /* CABEÇALHO */
+    --font-li: 'Outfit', sans-serif;
+
+    /* --cabecaljo-color: rgb(20, 20, 20); */
+    --cabecaljo-color: #202020;
+
+    --underline-li-color: #B78865;
+    --font-color: #000;
+
+    --border-menuMobile-color: rgba(255, 255, 255, 0.884);
+    --bacground-menuMobile-color: rgb(80, 80, 80);
+
+    --border-radius-primary: 10px;
+
+    --sombra-texto: 1px 2px 3px rgba(0, 0, 0, .2);
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+}

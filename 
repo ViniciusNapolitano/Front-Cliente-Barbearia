@@ -1,0 +1,161 @@
+[33mcommit 0c11d190e359de15ccafab2074fb19185c900a96[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Wed Jan 12 01:55:38 2022 -0300
+
+    Barbeiros selecionado por servico funcionando, ajuste tela de login
+
+[33mcommit f862873a7986e696b01391eb1016b29c374c5a34[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Wed Jan 12 00:23:51 2022 -0300
+
+    Ajuste na apresentação do select com os barbeiros, agora a informação vem direto do servico
+
+[33mcommit 30ffa0947bc2285607298c0898170841c9e88c89[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Tue Jan 11 00:16:26 2022 -0300
+
+    FormAgendamento convertido para componente funcional
+
+[33mcommit ec20f74a7bd8a407065cbd804af74ecf1cee2289[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Sat Jan 8 23:00:27 2022 -0300
+
+    Primeira integração com api
+
+[33mcommit 4b32e3fb641b717e65fd158c67d7cd9a33b6504e[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Fri Jan 7 00:33:36 2022 -0300
+
+    Layout página de login responsiva
+
+[33mcommit 18e1b4334e957acc935448d39116a7760e04d999[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Thu Jan 6 01:08:50 2022 -0300
+
+    mais uma vez remocendo background e border de referência
+
+[33mcommit 89ca39617d8d8a74141345e78a8d48652ac70538[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Thu Jan 6 01:04:08 2022 -0300
+
+    Ajuste de layout página agendamentoinfo, inclusão de logo, novo header com link para Home
+
+[33mcommit 50bce5e22937e1474b5fcb1fae9793187f29a722[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Wed Jan 5 00:54:35 2022 -0300
+
+    Ajuste de responsividade para celulares alta resolução, rolagem da página com menu
+
+[33mcommit c4ff82da2b112c9ac4116d301a2cecc42644b819[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Mon Jan 3 23:41:15 2022 -0300
+
+    Ajuste de espaçamento de conteúdo e títulos
+
+[33mcommit 917081813fc12069a2010b4b688cbb674fd4b135[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Mon Jan 3 23:06:49 2022 -0300
+
+    Ajuste card item servico, adicionado media query para max 400px
+
+[33mcommit ac16299b2632eccd319f7e273279d5f87441f36f[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Mon Jan 3 22:55:00 2022 -0300
+
+    Teste responsividade do card item servico, ajuste de tamanho e fonte
+
+[33mcommit a34e6747099e82272a04b2dba4df4fd880944119[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Sun Jan 2 22:07:39 2022 -0300
+
+    Alteração painel Fotos, footer e mapa
+
+[33mcommit 7bd75f9ad9709a6da9e910bf799df0a64cf1615c[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Sun Jan 2 14:13:11 2022 -0300
+
+    Foto do barbeiro, sem api
+
+[33mcommit 455dda7dc0d87a6007a4471dbd44fa3700813d2e[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Thu Dec 30 22:04:58 2021 -0300
+
+    Ajuste 2 layout ItemServico card
+
+[33mcommit f5d6c3a2c753a50e0ecf3064249f47528d347ec9[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Thu Dec 30 21:16:45 2021 -0300
+
+    Alteração layout ItemServico
+
+[33mcommit a596afdd016c3d4ba45113d63d21d3ffabea38c2[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Wed Dec 29 03:44:09 2021 -0300
+
+    Ajuste dos títulos e link dos cards de servico
+
+[33mcommit fda1f99617d6096a4a94ee610dd89aa7975b7c80[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Wed Dec 29 03:32:12 2021 -0300
+
+    Ajuste input agendamento
+
+[33mcommit 62cf70d7093c729fc096fc6e59d2b509766199a8[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Wed Dec 29 03:09:12 2021 -0300
+
+    Teste correção largura do header, estilização barra de rolagem
+
+[33mcommit 53a2b042b8ea3afc623ec351ef4ae91145a06f63[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Wed Dec 29 02:56:10 2021 -0300
+
+    primeira versão tela agendamento
+
+[33mcommit 97a1d92d30c8bdb218d8e3931bc8c5417de26a53[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Mon Dec 20 17:38:23 2021 -0300
+
+    Ajuste section fotos
+
+[33mcommit 2235f592c6d7f1823d9919f06e4b4182b6b3fbdd[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Wed Dec 15 22:37:25 2021 -0300
+
+    Teste 1 layout Serviços mobile
+
+[33mcommit 68042c5e81056c174a033aaf332c66f65f422fef[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Mon Dec 13 22:57:53 2021 -0300
+
+    Primeira versão da responsividade da section Servico
+
+[33mcommit 1034c2a1cd33c561113147b5dcf92f29aa1879b1[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Thu Dec 9 21:50:20 2021 -0300
+
+    Inicio painel de servicos, sem responsividade
+
+[33mcommit e8a93f21e321c4546ad468c89c4d11a756fef72a[m
+Author: ViniciusNapolitano <viniciusnapolitano75@gmail.com>
+Date:   Wed Dec 1 23:43:27 2021 -0300
+
+    botao agendar
+
+[33mcommit 0c7591923ebeb87ea49e986287421560d2e77d6f[m
+Author: dantemds <dantemds@hotmail.com>
+Date:   Tue Nov 30 23:13:21 2021 -0300
+
+    Menu Hamburguer animado
+
+[33mcommit 18e9631f3b174825a61b4da1cb0a9022858f4871[m
+Author: dantemds <dantemds@hotmail.com>
+Date:   Tue Nov 30 00:46:52 2021 -0300
+
+    Header desktop
+
+[33mcommit a3d2bbdc7176eb5b3fd16c077755fd295306e961[m
+Author: dantemds <dantemds@hotmail.com>
+Date:   Mon Nov 29 22:04:42 2021 -0300
+
+    Initialize project using Create React App

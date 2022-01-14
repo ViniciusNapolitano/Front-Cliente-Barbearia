@@ -1,0 +1,124 @@
+.ItemServico-card {
+    list-style: none;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 300px;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    transition: .3s;
+}
+
+.ItemServico-img {
+    width: 100%;
+    height: 60%;
+    object-fit: cover;
+}
+
+.ItemServico-info-card {
+    width: 100%;
+    padding: 0 10px;
+    /* display: grid; */
+    grid-template-columns:  1fr 1fr 1fr;
+    grid-template-rows: 1fr 2fr;
+    gap: 0;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.ItemServico-wrap-p {
+    display: flex;
+    height: 50px;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #808080;
+    color: #505050;
+}
+
+.ItemServico-info-card h1 {
+    font-size: 16pt;
+}
+
+.ItemServico-info-card > p {
+    font-size: 11pt;
+    color: #505050;    
+    background-color: brown;
+}
+
+.ItemServico-link {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    color: #B78865;
+    align-items: center;
+    justify-content: center;
+}
+
+.ItemServico-link p {
+    width: 150px;
+    height: 40px;
+    padding: 2px;
+    font-size: 17pt;
+    font-weight: 500;
+    text-align: center;
+    border-radius: 5px;
+    transition: all .2s;
+    text-transform: uppercase;
+    border: 2px solid #B78865;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+}
+
+.ItemServico-link p:hover {
+    color: #fff;
+    background-color: #B78865;
+}
+
+@media (max-width: 800px) {
+    .ItemServico-link {
+        height: 35px;
+    }
+
+    .ItemServico-info-card p {
+        font-size: .8em;
+    }
+    
+    .ItemServico-link > p {
+        width: 100px;
+        height: 25px;
+        padding: 1px;
+        font-size: .85em;
+        margin-top: 10px;
+    }
+
+    .ItemServico-card {
+        width: auto;
+        height: auto;
+        /* margin: 8px; */
+    }
+
+    .ItemServico-wrap-p {
+        height: auto;
+    }
+
+    .ItemServico-info-card h1 {
+        font-size: .85em;
+        padding: 4px 0;
+    }   
+}
+
+@media (max-width: 400px) {
+    .ItemServico-info-card h1 {
+        font-size: .65em;
+        padding: 4px 0;
+    } 
+
+    .ItemServico-info-card p {
+        font-size: .6em;
+    }
+
+    .ItemServico-link > p {
+        font-size: .8em;
+    }
+}
