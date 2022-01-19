@@ -21,6 +21,7 @@ export default function FormAgendamento(props) {
     const [emailCliente, setEmailCliente] = useState('')
     const [telefoneCliente, setTelefoneCliente] = useState('')
     const [fotoBarbeiro, setFotoBarbeiro] = useState(false)
+    const [horariosDisponiveis, setHorariosDisponiveis] = useState(false)
 
     let agendamentoDia
     let horaAgendamento
@@ -28,8 +29,9 @@ export default function FormAgendamento(props) {
     let tempoAgendamento
     let ListaTempoAgendamento = []
     let listaHoraBloqueada = []
-    let horaMinFunc = 8
-    let horaMaxFunc = 20
+    let horaMinFunc = 10
+    let horaMaxFunc = 18
+    let tamDuracaoServico = 0
     let horaServico = parseFloat(tempoServico.slice(11, 16).toString().replace(':', '.'))
     let numServicosPossiveisDia
     let listaHoraDisponivel = []
@@ -48,7 +50,9 @@ export default function FormAgendamento(props) {
         await axios.get(`https://mybarberapi.herokuapp.com/api/v1/agendamentos/tenant/1?Date=${agendamentoDia}`)
             .then(res => {
                 setResAgendamentoDia(res.data)
-                // console.log(res.data)
+                setHorariosDisponiveis(true)
+
+                console.log(res.data)
             })
     }
 
@@ -62,37 +66,71 @@ export default function FormAgendamento(props) {
         })
     }
 
-    const listarHorariosDisponiveis = () => {
-        let count = horaMinFunc
-        horaServico = 1.3
+    const calcHoraServico = (hora) => {
+        let duracaoServico
+        resAgendamentoDia.map(agendamento => {
+            if (parseFloat(agendamento.horario.slice(11, 16).toString().replace(':', '.')) == hora) {
+                duracaoServico = parseFloat(agendamento.servicos.tempoServico.slice(11, 16).toString().replace(':', '.'))
+            }
+        })
+        return duracaoServico
+    }
 
+    const calcDuracaoServico = (horaServico) => {
         if (horaServico == .3) {
-            count = horaMinFunc - 0.5
             horaServico = .5
+            tamDuracaoServico = 1
         } else if (horaServico == 1) {
-            count = horaMinFunc - 1
+            tamDuracaoServico = 2
         } else if (horaServico == 1.3) {
-            count = horaMinFunc - 1.5
             horaServico = 1.5
+            tamDuracaoServico = 3
         } else if (horaServico == 2) {
-            count = -1
+            tamDuracaoServico = 4
         }
+    }
 
-        numServicosPossiveisDia = Math.round(((horaMaxFunc - horaMinFunc) / horaServico) - 0.1)
+    const listarHorariosDisponiveis = () => {
+        var count = horaMinFunc
+        let countIndexMap = 0
+        // horaServico = 1
+
+        calcDuracaoServico(horaServico)
+
+        numServicosPossiveisDia = Math.round(((horaMaxFunc - horaMinFunc) / .5) - 0.1)
 
         for (let i = 0; i < numServicosPossiveisDia; i++) {
             listaHoraDisponivel.push('*')
         }
 
         return listaHoraDisponivel.map(() => {
-            count += horaServico
 
-            if (horaServico == .5 || horaServico == 1.5)
-                return <li>{count.toString().replace('.5', ':30')}h</li>
-            else
-                return <li>{count}:00h</li>
+            countIndexMap++
+            let horaBloqueada = false
 
+            for (let i = 0; i < listaHoraAgendamento.length; i++) {
+                if (listaHoraAgendamento[i] == count) {
+                    horaBloqueada = true
+                    calcDuracaoServico(calcHoraServico(count))
+                    count += (0.5 * tamDuracaoServico)
+                }
+            }
 
+            if (!(count + horaServico > horaMaxFunc)) {
+                if (!horaBloqueada) {
+                    let aux = count
+                    count += .5
+                    // console.log(count)
+                    if (horaServico == .5 || horaServico == 1.5) {
+                        return <li>{aux.toString().replace('.5', ':30')}h</li>
+                    }
+                    else
+                        return <li>{aux.toString().replace('.5', ':30')}h</li>
+                } else {
+                    horaBloqueada = false
+                    return ''
+                }
+            }
         })
     }
 
@@ -215,8 +253,9 @@ export default function FormAgendamento(props) {
 
                 #################################################<br /><br />
                 <ul>
-
-                    {listarHorariosDisponiveis()}
+                    {
+                        horariosDisponiveis ? listarHorariosDisponiveis() : ''
+                    }
                 </ul>
 
                 <label className="FormAgendamento-espacamento">Nome:</label>
