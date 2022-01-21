@@ -1,0 +1,40 @@
+.listaAgendamentos-div-calendar {
+    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+    border: none;
+}
+
+.listaAgendamentos-section .react-calendar__navigation {
+    background-color: orangered;
+}
+
+.listaAgendamentos-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    padding: 32px;
+}
+
+.listaAgendamentos-tb-agendamentos, tr, th {
+    font-weight: 400;
+}
+
+.listaAgendamentos-tb-agendamentos th {
+    padding: 16px 24px;
+}
+
+.listaAgendamentos-tb-agendamentos tr:nth-child(2n+3) {
+    background-color: #ffddd1;
+}
+
+.listaAgendamentos-titulos-col {
+    background-color: orangered;
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.listaAgendamentos-tb-agendamentos {
+    border-collapse: collapse;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+}

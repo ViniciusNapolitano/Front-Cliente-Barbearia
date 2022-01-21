@@ -29,12 +29,13 @@ export default function FormAgendamento(props) {
     let tempoAgendamento
     let ListaTempoAgendamento = []
     let listaHoraBloqueada = []
-    let horaMinFunc = 10
+    let horaMinFunc = 12
     let horaMaxFunc = 18
     let tamDuracaoServico = 0
     let horaServico = parseFloat(tempoServico.slice(11, 16).toString().replace(':', '.'))
     let numServicosPossiveisDia
     let listaHoraDisponivel = []
+    let listaHoraDisponivelFIXA = []
 
 
     useEffect(() => {
@@ -69,7 +70,7 @@ export default function FormAgendamento(props) {
     const calcHoraServico = (hora) => {
         let duracaoServico
         resAgendamentoDia.map(agendamento => {
-            if (parseFloat(agendamento.horario.slice(11, 16).toString().replace(':', '.')) == hora) {
+            if (parseFloat(agendamento.horario.slice(11, 16).toString().replace(':', '.').replace('.3', '.5')) == hora) {
                 duracaoServico = parseFloat(agendamento.servicos.tempoServico.slice(11, 16).toString().replace(':', '.'))
             }
         })
@@ -90,49 +91,117 @@ export default function FormAgendamento(props) {
         }
     }
 
-    const listarHorariosDisponiveis = () => {
-        var count = horaMinFunc
-        let countIndexMap = 0
-        // horaServico = 1
-
-        calcDuracaoServico(horaServico)
-
-        numServicosPossiveisDia = Math.round(((horaMaxFunc - horaMinFunc) / .5) - 0.1)
-
-        for (let i = 0; i < numServicosPossiveisDia; i++) {
-            listaHoraDisponivel.push('*')
-        }
-
-        return listaHoraDisponivel.map(() => {
-
-            countIndexMap++
-            let horaBloqueada = false
-
-            for (let i = 0; i < listaHoraAgendamento.length; i++) {
-                if (listaHoraAgendamento[i] == count) {
-                    horaBloqueada = true
-                    calcDuracaoServico(calcHoraServico(count))
-                    count += (0.5 * tamDuracaoServico)
+    const valProxAgenDisponivel = (count) => {
+        let horarioDisponivel = true
+        listaHoraAgendamento.map(agendamento => {
+            console.log('Count: ' + count)
+            console.log('HoraServico: ' + horaServico)
+            console.log('agendamento: ' + agendamento)
+            if (agendamento > count) {
+                if (count + horaServico > agendamento) {
+                    horarioDisponivel = false
                 }
             }
+            console.log('horarioDisponivel: ' + horarioDisponivel)
+        })
+        return horarioDisponivel
 
-            if (!(count + horaServico > horaMaxFunc)) {
-                if (!horaBloqueada) {
-                    let aux = count
-                    count += .5
-                    // console.log(count)
-                    if (horaServico == .5 || horaServico == 1.5) {
-                        return <li>{aux.toString().replace('.5', ':30')}h</li>
-                    }
-                    else
-                        return <li>{aux.toString().replace('.5', ':30')}h</li>
-                } else {
-                    horaBloqueada = false
-                    return ''
-                }
+    }
+
+    const valHorariosBloqueados = (hora) => {
+        listaHoraAgendamento.map(horaAgendada => {
+            if (hora == horaAgendada) {
+
+                listaHoraDisponivel.splice(listaHoraDisponivel.indexOf(hora), tamDuracaoServico)
             }
         })
     }
+
+    const valTempoNecessarioDisponivel = () => {
+        listaHoraDisponivel.map(horaDisp => {
+        })
+        for (let i = 0; i < listaHoraDisponivel.length; i++) {
+            if(listaHoraDisponivel[i + 1] - listaHoraDisponivel[i] != .5){
+                console.log('hora atual: ' + listaHoraDisponivel[i])
+                console.log('próxima atual: ' + listaHoraDisponivel[i+1])
+                console.log(listaHoraDisponivel)
+                listaHoraDisponivel.pop(listaHoraDisponivel[i])
+            }
+
+        }
+    }
+
+    const listarHorariosDisponiveis = () => {
+
+
+        // Adiciona a lista listaHoraDisponivel todos os horários disponíveis
+        for (let i = horaMinFunc; i < horaMaxFunc; i += .5) {
+            listaHoraDisponivel.push(i)
+            listaHoraDisponivelFIXA.push(i)
+        }
+
+        // Validação na lista de horários disponíveis
+        for (let i = horaMinFunc; i < horaMaxFunc; i += .5) {
+            // calcHoraServico -> relaciona i com a duração do serviço que i representa
+            // calcDuracaoServico -> converte as horas para floats
+            calcDuracaoServico(calcHoraServico(i))
+
+            // Validação por horários já agendados
+            valHorariosBloqueados(i)
+
+        }
+        valTempoNecessarioDisponivel()
+
+        // Retorna uma lista das horas disponíveis
+        return listaHoraDisponivel.map(hora => {
+            return <li>{hora}</li>
+        })
+    }
+
+    // const listarHorariosDisponiveis = () => {
+    //     var count = horaMinFunc
+    //     let countIndexMap = 0
+    //     // horaServico = 1
+
+    //     calcDuracaoServico(horaServico)
+
+    //     numServicosPossiveisDia = Math.round(((horaMaxFunc - horaMinFunc) / .5) - 0.1)
+
+    //     for (let i = 0; i < numServicosPossiveisDia; i++) {
+    //         listaHoraDisponivel.push('*')
+    //     }
+
+    //     return listaHoraDisponivel.map(() => {
+
+    //         countIndexMap++
+    //         let horaBloqueada = false
+
+    //         for (let i = 0; i < listaHoraAgendamento.length; i++) {
+    //             if (listaHoraAgendamento[i] == count) {
+    //                 horaBloqueada = true
+    //                 calcDuracaoServico(calcHoraServico(count))
+    //                 count += (0.5 * tamDuracaoServico)
+    //             }
+    //         }
+    //         console.log(listaHoraDisponivel)
+
+    //         if (!(count + horaServico > horaMaxFunc) && valProxAgenDisponivel(count)) {
+    //             if (!horaBloqueada) {
+    //                 let aux = count
+    //                 count += .5        
+    //                 // console.log(count)
+    //                 if (horaServico == .5 || horaServico == 1.5) {
+    //                     return <li>{aux.toString().replace('.5', ':30')}h</li>
+    //                 }
+    //                 else
+    //                     return <li>{aux.toString().replace('.5', ':30')}h</li>
+    //             } else {
+    //                 horaBloqueada = false
+    //                 return ''
+    //             }
+    //         }
+    //     })
+    // }
 
     const listarHorariosDisponiveis2 = () => {
         for (let i = 0; i < listaHoraAgendamento.length; i++) {
@@ -231,7 +300,7 @@ export default function FormAgendamento(props) {
 
                 {resAgendamentoDia == '' ? '' :
                     resAgendamentoDia.map(agendamento => {
-                        horaAgendamento = parseFloat(agendamento.horario.slice(11, 16).toString().replace(':', '.'))
+                        horaAgendamento = parseFloat(agendamento.horario.slice(11, 16).toString().replace(':', '.').replace('.3', '.5'))
                         listaHoraAgendamento.push(horaAgendamento)
 
                         return <>horário agendamento: {agendamento.horario.slice(11, 16)}h<br /><br /></>
@@ -249,7 +318,7 @@ export default function FormAgendamento(props) {
                 }
                 #################################################<br /><br />
 
-                {listarHorariosDisponiveis2()}
+                {/* {listarHorariosDisponiveis2()} */}
 
                 #################################################<br /><br />
                 <ul>

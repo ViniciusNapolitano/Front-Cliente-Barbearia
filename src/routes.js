@@ -5,6 +5,7 @@ import Inicio from './pages/Inicio'
 import Agendamento from "./pages/Agendamento"
 import AgendamentoInformacoes from "./pages/AgendamentoInformacoes"
 import Login from "./pages/Login";
+import AdmMaster from "./pages/AdmMaster";
 
 export default function Rotas() {
     return (
@@ -14,6 +15,7 @@ export default function Rotas() {
                 <Route path="/agendamento" element={<Agendamento/>} />
                 <Route path="/agendamento/informacoes" element={<AgendamentoInformacoes/>} />
                 <Route path="/login" element={<Login/>} />
+                <Route path="/admmaster" element={<AdmMaster/>} />
             </Routes>
         </BrowserRouter>
     )
