@@ -103,6 +103,13 @@ abbr {
     margin-top: 8px;
 }
 
+.FormAgendamento-bt-horarios-disponiveis {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 350px;
+}
+
 .FormAgendamento-button {
     color: #fff;
     border: none;
@@ -115,9 +122,37 @@ abbr {
 }
 
 li {
-    border: 2px solid teal;
+    /* border: 2px solid teal; */
     margin: 4px;
     list-style: none;
+}
+
+.FormAgendamento-li-horaDisp {
+    padding: 8px;
+    margin: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: #B78865;
+    color: #fff;
+
+    border: 2px solid #B78865;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.FormAgendamento-li-horaDisp:hover {
+    background-color: #fff;
+    color: #B78865;
+}
+
+.span-hora {
+    font-weight: 300;
+}
+
+.error-message {
+    color: red;
+    font-size: .9rem;
+    margin-top: -15px;
 }
 
 @media (max-width: 768px) {

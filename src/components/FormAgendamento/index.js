@@ -10,12 +10,26 @@ import './style.css'
 import { format } from 'date-fns'
 import { EstadoContext } from "../Providers/estado";
 
+import validator from 'validator'
+import validatorTel from "validar-telefone";
+import { tr } from "date-fns/locale";
+
+// const validacaoPost = yup.object().shape({
+//     name: yup.string().required('Preencha seu nome!')
+//     // email: yup.string().email().required(),
+//     // contato: yup.number().positive().required()
+//     // horario: yup.string().required()
+//     // servicosId: yup.number().required(),
+//     // barbeirosId: yup.number().required()
+//     // barbeariasId: 1
+// })
 
 export default function FormAgendamento(props) {
 
     const { barbearia, nomeServico, tempoServico } = React.useContext(EstadoContext)
     const [idBarbeiro, setIdBarbeiro] = useState('')
     const [data, setData] = useState(new Date())
+    const [horaAgendamentoPost, setHoraAgendamentoPost] = useState('')
     const [resAgendamentoDia, setResAgendamentoDia] = useState('')
     const [nomeCliente, setNomeCliente] = useState('')
     const [emailCliente, setEmailCliente] = useState('')
@@ -23,19 +37,24 @@ export default function FormAgendamento(props) {
     const [fotoBarbeiro, setFotoBarbeiro] = useState(false)
     const [horariosDisponiveis, setHorariosDisponiveis] = useState(false)
 
+    const [valIdBarbeiro, setValIdBarbeiro] = useState(false)
+    const [valDataAgendamento, setValDataAgendamento] = useState(false)
+    const [valHoraAgendamento, setValHoraAgendamento] = useState(false)
+    const [valName, setValName] = useState(false)
+    const [valEmail, setValEmail] = useState(false)
+    const [valContato, setValContato] = useState(false)
+
+
     let agendamentoDia
     let horaAgendamento
     let listaHoraAgendamento = []
     let tempoAgendamento
     let ListaTempoAgendamento = []
-    let listaHoraBloqueada = []
-    let horaMinFunc = 12
+    let horaMinFunc = 5
     let horaMaxFunc = 18
     let tamDuracaoServico = 0
     let horaServico = parseFloat(tempoServico.slice(11, 16).toString().replace(':', '.'))
-    let numServicosPossiveisDia
     let listaHoraDisponivel = []
-    let listaHoraDisponivelFIXA = []
 
 
     useEffect(() => {
@@ -53,7 +72,7 @@ export default function FormAgendamento(props) {
                 setResAgendamentoDia(res.data)
                 setHorariosDisponiveis(true)
 
-                console.log(res.data)
+                // console.log(res.data)
             })
     }
 
@@ -174,67 +193,15 @@ export default function FormAgendamento(props) {
         // Retorna uma lista das horas disponíveis
         return listaHoraDisponivel.map(hora => {
             let horaCompleta = hora[0] + ':00'
+            horaCompleta = horaCompleta.toString().replace('.5:00', ':30')
+            if (horaCompleta.length == 4)
+                horaCompleta = '0' + horaCompleta
+            // console.log('Tamanho: ' + horaCompleta.length)
 
             if (hora[1] == null)
-                return <li>{horaCompleta.toString().replace('.5:00', ':30')}</li>
+                return <button className="FormAgendamento-li-horaDisp" type="button" onClick={handleChangeHora} value={horaCompleta}>{horaCompleta}</button>
 
         })
-    }
-
-    // const listarHorariosDisponiveis = () => {
-    //     var count = horaMinFunc
-    //     let countIndexMap = 0
-    //     // horaServico = 1
-
-    //     calcDuracaoServico(horaServico)
-
-    //     numServicosPossiveisDia = Math.round(((horaMaxFunc - horaMinFunc) / .5) - 0.1)
-
-    //     for (let i = 0; i < numServicosPossiveisDia; i++) {
-    //         listaHoraDisponivel.push('*')
-    //     }
-
-    //     return listaHoraDisponivel.map(() => {
-
-    //         countIndexMap++
-    //         let horaBloqueada = false
-
-    //         for (let i = 0; i < listaHoraAgendamento.length; i++) {
-    //             if (listaHoraAgendamento[i] == count) {
-    //                 horaBloqueada = true
-    //                 calcDuracaoServico(calcHoraServico(count))
-    //                 count += (0.5 * tamDuracaoServico)
-    //             }
-    //         }
-    //         console.log(listaHoraDisponivel)
-
-    //         if (!(count + horaServico > horaMaxFunc) && valProxAgenDisponivel(count)) {
-    //             if (!horaBloqueada) {
-    //                 let aux = count
-    //                 count += .5        
-    //                 // console.log(count)
-    //                 if (horaServico == .5 || horaServico == 1.5) {
-    //                     return <li>{aux.toString().replace('.5', ':30')}h</li>
-    //                 }
-    //                 else
-    //                     return <li>{aux.toString().replace('.5', ':30')}h</li>
-    //             } else {
-    //                 horaBloqueada = false
-    //                 return ''
-    //             }
-    //         }
-    //     })
-    // }
-
-    const listarHorariosDisponiveis2 = () => {
-        for (let i = 0; i < listaHoraAgendamento.length; i++) {
-            listaHoraBloqueada.push(listaHoraAgendamento[i] + ListaTempoAgendamento[i])
-        }
-
-        return listaHoraBloqueada.map(hora => {
-            return <>{hora}<br /><br /></>
-        })
-
     }
 
     // ##### HANDLES DO FORMULÁRIO #####
@@ -243,9 +210,15 @@ export default function FormAgendamento(props) {
     }
 
     const handleChangeData = event => {
-        setData(event)
         agendamentoDia = format(event, "yyyy-MM-dd")
+        setData(agendamentoDia)
         filtrarAgendamentoData(agendamentoDia)
+        setValDataAgendamento(true)
+    }
+
+    const handleChangeHora = event => {
+        setHoraAgendamentoPost(event.target.value)
+        setValHoraAgendamento(true)
     }
 
     const handleChangeNomeCliente = event => {
@@ -261,28 +234,106 @@ export default function FormAgendamento(props) {
     }
 
     // ##### HANDLES DE SUBMIT #####
-    const handleSubmitPostAgemdamento = event => {
+    const handleSubmitPostAgemdamento = async event => {
         event.preventDefault()
+
+        // const isValid = await validacaoPost.isValid(teste)
 
         const agendamento = {
             name: nomeCliente,
             email: emailCliente,
             contato: telefoneCliente,
-            horario: "2021-02-09T08:00:00",
+            horario: data + 'T' + horaAgendamentoPost + ':00',
             servicosId: barbearia,
             barbeirosId: idBarbeiro,
             barbeariasId: 1
         }
-        // console.log(agendamento)
 
-        axios.post(`https://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
-            .then(res => {
-                console.log(res);
-                console.log(res.data);
+        if(valFormPostAgendamento(agendamento)){
+            // console.log(agendamento)
+    
+            axios.post(`https://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
+                .then(res => {
+                    console.log(res);
+                    console.log(res.data);
+    
+                })
+                .catch(() => {
+                    console.log('Deu ruim')
+                })
+        } else {
+            console.log('Impossível realizar um agendamento!')
+        }
 
-            })
     }
 
+    const valNomeCompleto = (nome) => {
+        let valCorreta
+        if (nome.length < 3 || nome.length > 40) {
+            valCorreta = false
+        } else {
+            valCorreta = true
+            for (let i = 0; i < nome.length; i++) {
+                if (nome[i] == '!' ||
+                    nome[i] == '@' ||
+                    nome[i] == '#' ||
+                    nome[i] == '$' ||
+                    nome[i] == '%' ||
+                    nome[i] == '&' ||
+                    nome[i] == '*' ||
+                    nome[i] == '(' ||
+                    nome[i] == ')' ||
+                    nome[i] == '-' ||
+                    nome[i] == '+' ||
+                    nome[i] == '=' ||
+                    nome[i] == '?' ||
+                    nome[i] == '|' ||
+                    nome[i] == ',' ||
+                    nome[i] == ';' ||
+                    nome[i] == '/' ||
+                    nome[i] == '|' ||
+                    nome[i] == '.') {
+                    valCorreta = false
+                }
+            }
+        }
+
+        return valCorreta
+    }
+
+    const valFormPostAgendamento = (agendamento) => {
+        let FormPostValidado = true
+
+        if (!idBarbeiro == '') {
+            setValIdBarbeiro(false)
+        } else {
+            setValIdBarbeiro(true)
+            FormPostValidado = false
+        }
+
+        if (valNomeCompleto(agendamento.name)) {
+            setValName(false)
+        } else {
+            setValName(true)
+            FormPostValidado = false
+        }
+
+        if (validator.isEmail(agendamento.email)) {
+            setValEmail(false)
+        } else {
+            setValEmail(true)
+            FormPostValidado = false
+        }
+
+        if (validatorTel(agendamento.contato)) {
+            setValContato(false)
+        } else {
+            setValContato(true)
+            FormPostValidado = false
+        }
+
+        return FormPostValidado
+    }
 
     return (
         <section className="FormAgendamento-section">
@@ -296,6 +347,10 @@ export default function FormAgendamento(props) {
                     <option key="0" value="0">Selecionar</option>
                     {listarBarbeiros()}
                 </select>
+                {valIdBarbeiro ?
+                    <p className="error-message">Selecione um barbeiro.</p>
+                    : ''
+                }
 
                 {
                     fotoBarbeiro ?
@@ -316,48 +371,82 @@ export default function FormAgendamento(props) {
                     <Calendar
                         className="FormAgendamento-calendar"
                         onChange={handleChangeData}
-                        value={data}
+                    // value={data}
                     />
                 </div>
-                {/* {format(data, "yyyy-MM-dd")}<br /> */}
+                {!valDataAgendamento ?
+                    <p className="error-message">Selecione uma data para agendar.</p>
+                    : ''
+                }
 
                 {resAgendamentoDia == '' ? '' :
                     resAgendamentoDia.map(agendamento => {
                         horaAgendamento = parseFloat(agendamento.horario.slice(11, 16).toString().replace(':', '.').replace('.3', '.5'))
                         listaHoraAgendamento.push(horaAgendamento)
 
-                        return <>horário agendamento: {agendamento.horario.slice(11, 16)}h<br /><br /></>
+                        // return <>horário agendamento: {agendamento.horario.slice(11, 16)}h<br /><br /></>
                     })
                 }
-                #################################################<br /><br />
 
                 {resAgendamentoDia == '' ? '' :
                     resAgendamentoDia.map(agendamento => {
                         tempoAgendamento = parseFloat(agendamento.servicos.tempoServico.slice(11, 16).toString().replace(':', '.'))
                         ListaTempoAgendamento.push(tempoAgendamento)
 
-                        return <>horário agendamento: {agendamento.servicos.tempoServico.slice(11, 16)}h<br /><br /></>
+                        // return <>horário agendamento: {agendamento.servicos.tempoServico.slice(11, 16)}h<br /><br /></>
                     })
                 }
-                #################################################<br /><br />
 
-                {/* {listarHorariosDisponiveis2()} */}
+                <label>Hora Selecionada: <span className="span-hora">{horaAgendamentoPost}</span></label>
+                <input disabled type="text" placeholder={horaAgendamentoPost}></input>
+                {!valHoraAgendamento ?
+                    <p className="error-message">Selecione uma data para agendar.</p>
+                    : ''
+                }
 
-                #################################################<br /><br />
-                <ul>
+
+                <div className="FormAgendamento-bt-horarios-disponiveis">
                     {
                         horariosDisponiveis ? listarHorariosDisponiveis() : ''
                     }
-                </ul>
+                </div>
 
                 <label className="FormAgendamento-espacamento">Nome:</label>
-                <input type="text" onChange={handleChangeNomeCliente}></input>
+                <input type="text"
+                    onChange={handleChangeNomeCliente}
+                    maxLength="40"
+                    minLength='3'
+                ></input>
+                {valName ?
+                    <p className="error-message">
+                        O nome deve ter no mínimo 3 caracteres. <br />
+                        O nome deve ter no máximo 40 caracteres. <br />
+                        O nome não pode conter caracteres especiais.
+                    </p>
+                    : ''
+                }
 
-                <label className="FormAgendamento-espacamento">E-mail:</label>
-                <input type="email" onChange={handleChangeEmailCliente}></input>
+                <label className="FormAgendamento-espacamento ">E-mail:</label>
+                <input
+                    type="email"
+                    onChange={handleChangeEmailCliente}>
+                </input>
+                {valEmail ?
+                    <p className="error-message">Insira um e-mail válido.</p>
+                    : ''
+                }
+
 
                 <label className="FormAgendamento-espacamento">Telefone:</label>
-                <input type="tel" onChange={handleChangeTelefoneCliente}></input>
+                <input
+                    type="tel"
+                    onChange={handleChangeTelefoneCliente}
+                >
+                </input>
+                {valContato ?
+                    <p className="error-message">Insira um contato válido.</p>
+                    : ''
+                }
 
                 <button type="submit" className="FormAgendamento-button FormAgendamento-espacamento">Agendar</button>
             </form>
