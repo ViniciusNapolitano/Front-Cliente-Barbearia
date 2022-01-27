@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react"
 
+import { useNavigate } from 'react-router-dom';
+
 import axios from 'axios';
 
 import Calendar from 'react-calendar'
@@ -26,6 +28,7 @@ import { tr } from "date-fns/locale";
 
 export default function FormAgendamento(props) {
 
+    let navigate = useNavigate()
     const { barbearia, nomeServico, tempoServico } = React.useContext(EstadoContext)
     const [idBarbeiro, setIdBarbeiro] = useState('')
     const [data, setData] = useState(new Date())
@@ -37,12 +40,12 @@ export default function FormAgendamento(props) {
     const [fotoBarbeiro, setFotoBarbeiro] = useState(false)
     const [horariosDisponiveis, setHorariosDisponiveis] = useState(false)
 
-    const [valIdBarbeiro, setValIdBarbeiro] = useState(false)
-    const [valDataAgendamento, setValDataAgendamento] = useState(false)
-    const [valHoraAgendamento, setValHoraAgendamento] = useState(false)
-    const [valName, setValName] = useState(false)
-    const [valEmail, setValEmail] = useState(false)
-    const [valContato, setValContato] = useState(false)
+    // const [valIdBarbeiro, setValIdBarbeiro] = useState(false)
+    // const [valDataAgendamento, setValDataAgendamento] = useState(false)
+    // const [valHoraAgendamento, setValHoraAgendamento] = useState(false)
+    // const [valName, setValName] = useState(false)
+    // const [valEmail, setValEmail] = useState(false)
+    // const [valContato, setValContato] = useState(false)
 
 
     let agendamentoDia
@@ -213,12 +216,12 @@ export default function FormAgendamento(props) {
         agendamentoDia = format(event, "yyyy-MM-dd")
         setData(agendamentoDia)
         filtrarAgendamentoData(agendamentoDia)
-        setValDataAgendamento(true)
+        // setValDataAgendamento(true)
     }
 
     const handleChangeHora = event => {
         setHoraAgendamentoPost(event.target.value)
-        setValHoraAgendamento(true)
+        // setValHoraAgendamento(true)
     }
 
     const handleChangeNomeCliente = event => {
@@ -252,17 +255,17 @@ export default function FormAgendamento(props) {
         if(valFormPostAgendamento(agendamento)){
             // console.log(agendamento)
     
-            axios.post(`https://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
+            await axios.post(`https://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
                 .then(res => {
                     console.log(res);
                     console.log(res.data);
-    
+                    navigate('/confirmacao-agendamento')
                 })
                 .catch(() => {
-                    console.log('Deu ruim')
+                    // console.log('Deu ruim')
                 })
         } else {
-            console.log('Impossível realizar um agendamento!')
+            // console.log('Impossível realizar um agendamento!')
         }
 
     }
@@ -305,30 +308,30 @@ export default function FormAgendamento(props) {
         let FormPostValidado = true
 
         if (!idBarbeiro == '') {
-            setValIdBarbeiro(false)
+            // setValIdBarbeiro(false)
         } else {
-            setValIdBarbeiro(true)
+            // setValIdBarbeiro(true)
             FormPostValidado = false
         }
 
         if (valNomeCompleto(agendamento.name)) {
-            setValName(false)
+            // setValName(false)
         } else {
-            setValName(true)
+            // setValName(true)
             FormPostValidado = false
         }
 
         if (validator.isEmail(agendamento.email)) {
-            setValEmail(false)
+            // setValEmail(false)
         } else {
-            setValEmail(true)
+            // setValEmail(true)
             FormPostValidado = false
         }
 
         if (validatorTel(agendamento.contato)) {
-            setValContato(false)
+            // setValContato(false)
         } else {
-            setValContato(true)
+            // setValContato(true)
             FormPostValidado = false
         }
 
@@ -347,10 +350,10 @@ export default function FormAgendamento(props) {
                     <option key="0" value="0">Selecionar</option>
                     {listarBarbeiros()}
                 </select>
-                {valIdBarbeiro ?
+                {/* {valIdBarbeiro ?
                     <p className="error-message">Selecione um barbeiro.</p>
                     : ''
-                }
+                } */}
 
                 {
                     fotoBarbeiro ?
@@ -374,10 +377,10 @@ export default function FormAgendamento(props) {
                     // value={data}
                     />
                 </div>
-                {!valDataAgendamento ?
+                {/* {!valDataAgendamento ?
                     <p className="error-message">Selecione uma data para agendar.</p>
                     : ''
-                }
+                } */}
 
                 {resAgendamentoDia == '' ? '' :
                     resAgendamentoDia.map(agendamento => {
@@ -399,10 +402,10 @@ export default function FormAgendamento(props) {
 
                 <label>Hora Selecionada: <span className="span-hora">{horaAgendamentoPost}</span></label>
                 <input disabled type="text" placeholder={horaAgendamentoPost}></input>
-                {!valHoraAgendamento ?
+                {/* {!valHoraAgendamento ?
                     <p className="error-message">Selecione uma data para agendar.</p>
                     : ''
-                }
+                } */}
 
 
                 <div className="FormAgendamento-bt-horarios-disponiveis">
@@ -417,24 +420,24 @@ export default function FormAgendamento(props) {
                     maxLength="40"
                     minLength='3'
                 ></input>
-                {valName ?
+                {/* {valName ?
                     <p className="error-message">
                         O nome deve ter no mínimo 3 caracteres. <br />
                         O nome deve ter no máximo 40 caracteres. <br />
                         O nome não pode conter caracteres especiais.
                     </p>
                     : ''
-                }
+                } */}
 
                 <label className="FormAgendamento-espacamento ">E-mail:</label>
                 <input
                     type="email"
                     onChange={handleChangeEmailCliente}>
                 </input>
-                {valEmail ?
+                {/* {valEmail ?
                     <p className="error-message">Insira um e-mail válido.</p>
                     : ''
-                }
+                } */}
 
 
                 <label className="FormAgendamento-espacamento">Telefone:</label>
@@ -443,10 +446,10 @@ export default function FormAgendamento(props) {
                     onChange={handleChangeTelefoneCliente}
                 >
                 </input>
-                {valContato ?
+                {/* {valContato ?
                     <p className="error-message">Insira um contato válido.</p>
                     : ''
-                }
+                } */}
 
                 <button type="submit" className="FormAgendamento-button FormAgendamento-espacamento">Agendar</button>
             </form>
