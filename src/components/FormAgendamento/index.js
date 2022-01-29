@@ -14,39 +14,45 @@ import { EstadoContext } from "../Providers/estado";
 
 import validator from 'validator'
 import validatorTel from "validar-telefone";
-import { tr } from "date-fns/locale";
-
-// const validacaoPost = yup.object().shape({
-//     name: yup.string().required('Preencha seu nome!')
-//     // email: yup.string().email().required(),
-//     // contato: yup.number().positive().required()
-//     // horario: yup.string().required()
-//     // servicosId: yup.number().required(),
-//     // barbeirosId: yup.number().required()
-//     // barbeariasId: 1
-// })
 
 export default function FormAgendamento(props) {
 
     let navigate = useNavigate()
     const { barbearia, nomeServico, tempoServico } = React.useContext(EstadoContext)
-    const [idBarbeiro, setIdBarbeiro] = useState('')
     const [data, setData] = useState(new Date())
-    const [horaAgendamentoPost, setHoraAgendamentoPost] = useState('')
     const [resAgendamentoDia, setResAgendamentoDia] = useState('')
-    const [nomeCliente, setNomeCliente] = useState('')
-    const [emailCliente, setEmailCliente] = useState('')
-    const [telefoneCliente, setTelefoneCliente] = useState('')
+    
+    // const [nomeCliente, setNomeCliente] = useState('')
+    // const [emailCliente, setEmailCliente] = useState('')
+    // const [telefoneCliente, setTelefoneCliente] = useState('')
+    // const [horaAgendamentoPost, setHoraAgendamentoPost] = useState('')
+    // const [idBarbeiro, setIdBarbeiro] = useState('')
+
+    const [infoCliente, setInfoCliente] = useState({
+        nomeCliente: '',
+        emailCliente: '',
+        telefoneCliente: '',
+        horaAgendamentoPost: '',
+        idBarbeiro: ''
+    })
+    
     const [fotoBarbeiro, setFotoBarbeiro] = useState(false)
     const [horariosDisponiveis, setHorariosDisponiveis] = useState(false)
 
     // const [valIdBarbeiro, setValIdBarbeiro] = useState(false)
-    // const [valDataAgendamento, setValDataAgendamento] = useState(false)
-    // const [valHoraAgendamento, setValHoraAgendamento] = useState(false)
-    // const [valName, setValName] = useState(false)
-    // const [valEmail, setValEmail] = useState(false)
+    const [valDataAgendamento, setValDataAgendamento] = useState(false)
+    const [valHoraAgendamento, setValHoraAgendamento] = useState(false)
+    const [valName, setValName] = useState(false)
+    const [valEmail, setValEmail] = useState(false)
     // const [valContato, setValContato] = useState(false)
 
+    // name: nomeCliente,
+    //         email: emailCliente,
+    //         contato: telefoneCliente,
+    //         horario: data + 'T' + horaAgendamentoPost + ':00',
+    //         servicosId: barbearia,
+    //         barbeirosId: idBarbeiro,
+    //         barbeariasId: 1
 
     let agendamentoDia
     let horaAgendamento
@@ -62,12 +68,12 @@ export default function FormAgendamento(props) {
 
     useEffect(() => {
         props.servicos.map(servico => servico.servicosBarbeiros.map(barbeiro => {
-            if (barbeiro.barbeiros.idBarbeiro == idBarbeiro)
+            if (barbeiro.barbeiros.idBarbeiro == infoCliente.idBarbeiro)
                 setFotoBarbeiro(barbeiro.barbeiros.barbeiroImagem.url)
-            else if (0 == idBarbeiro)
+            else if (0 == infoCliente.idBarbeiro)
                 setFotoBarbeiro(false)
         }))
-    }, [idBarbeiro])
+    }, [infoCliente.idBarbeiro])
 
     async function filtrarAgendamentoData(agendamentoDia) {
         await axios.get(`https://mybarberapi.herokuapp.com/api/v1/agendamentos/tenant/1?Date=${agendamentoDia}`)
@@ -209,51 +215,56 @@ export default function FormAgendamento(props) {
 
     // ##### HANDLES DO FORMULÁRIO #####
     const handleChangeBarbeiro = event => {
-        setIdBarbeiro(event.target.value)
+        setInfoCliente({...infoCliente, idBarbeiro: event.target.value})
     }
 
     const handleChangeData = event => {
         agendamentoDia = format(event, "yyyy-MM-dd")
         setData(agendamentoDia)
         filtrarAgendamentoData(agendamentoDia)
-        // setValDataAgendamento(true)
+        setValDataAgendamento(true)
     }
 
     const handleChangeHora = event => {
-        setHoraAgendamentoPost(event.target.value)
-        // setValHoraAgendamento(true)
+        // setHoraAgendamentoPost(event.target.value)
+        setInfoCliente({...infoCliente, horaAgendamentoPost: event.target.value})
+
+        setValHoraAgendamento(true)
     }
 
     const handleChangeNomeCliente = event => {
-        setNomeCliente(event.target.value)
+        // setNomeCliente(event.target.value)
+        setInfoCliente({...infoCliente, nomeCliente: event.target.value})
     }
 
     const handleChangeEmailCliente = event => {
-        setEmailCliente(event.target.value)
+        // setEmailCliente(event.target.value)
+        setInfoCliente({...infoCliente, emailCliente: event.target.value})
+
     }
 
     const handleChangeTelefoneCliente = event => {
-        setTelefoneCliente(event.target.value)
+        // setTelefoneCliente(event.target.value)
+        setInfoCliente({...infoCliente, telefoneCliente: event.target.value})
+
     }
 
     // ##### HANDLES DE SUBMIT #####
     const handleSubmitPostAgemdamento = async event => {
         event.preventDefault()
 
-        // const isValid = await validacaoPost.isValid(teste)
-
         const agendamento = {
-            name: nomeCliente,
-            email: emailCliente,
-            contato: telefoneCliente,
-            horario: data + 'T' + horaAgendamentoPost + ':00',
+            name: infoCliente.nomeCliente,
+            email: infoCliente.emailCliente,
+            contato: infoCliente.telefoneCliente,
+            horario: data + 'T' + infoCliente.horaAgendamentoPost + ':00',
             servicosId: barbearia,
-            barbeirosId: idBarbeiro,
+            barbeirosId: infoCliente.idBarbeiro,
             barbeariasId: 1
         }
 
+            console.log(agendamento)
         if(valFormPostAgendamento(agendamento)){
-            // console.log(agendamento)
     
             await axios.post(`https://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
                 .then(res => {
@@ -307,33 +318,33 @@ export default function FormAgendamento(props) {
     const valFormPostAgendamento = (agendamento) => {
         let FormPostValidado = true
 
-        if (!idBarbeiro == '') {
-            // setValIdBarbeiro(false)
-        } else {
-            // setValIdBarbeiro(true)
-            FormPostValidado = false
-        }
+        // if (!infoCliente.idBarbeiro == '') {
+        //     setValIdBarbeiro(false)
+        // } else {
+        //     setValIdBarbeiro(true)
+        //     FormPostValidado = false
+        // }
 
         if (valNomeCompleto(agendamento.name)) {
-            // setValName(false)
+            setValName(false)
         } else {
-            // setValName(true)
+            setValName(true)
             FormPostValidado = false
         }
 
         if (validator.isEmail(agendamento.email)) {
-            // setValEmail(false)
+            setValEmail(false)
         } else {
-            // setValEmail(true)
+            setValEmail(true)
             FormPostValidado = false
         }
 
-        if (validatorTel(agendamento.contato)) {
-            // setValContato(false)
-        } else {
-            // setValContato(true)
-            FormPostValidado = false
-        }
+        // if (validatorTel(agendamento.contato)) {
+        //     setValContato(false)
+        // } else {
+        //     setValContato(true)
+        //     FormPostValidado = false
+        // }
 
         return FormPostValidado
     }
@@ -350,10 +361,10 @@ export default function FormAgendamento(props) {
                     <option key="0" value="0">Selecionar</option>
                     {listarBarbeiros()}
                 </select>
-                {/* {valIdBarbeiro ?
+                {infoCliente.idBarbeiro == '' ?
                     <p className="error-message">Selecione um barbeiro.</p>
                     : ''
-                } */}
+                }
 
                 {
                     fotoBarbeiro ?
@@ -377,10 +388,10 @@ export default function FormAgendamento(props) {
                     // value={data}
                     />
                 </div>
-                {/* {!valDataAgendamento ?
+                {!valDataAgendamento ?
                     <p className="error-message">Selecione uma data para agendar.</p>
                     : ''
-                } */}
+                }
 
                 {resAgendamentoDia == '' ? '' :
                     resAgendamentoDia.map(agendamento => {
@@ -400,12 +411,12 @@ export default function FormAgendamento(props) {
                     })
                 }
 
-                <label>Hora Selecionada: <span className="span-hora">{horaAgendamentoPost}</span></label>
-                <input disabled type="text" placeholder={horaAgendamentoPost}></input>
-                {/* {!valHoraAgendamento ?
+                <label>Hora Selecionada: <span className="span-hora">{infoCliente.horaAgendamentoPost}</span></label>
+                <input disabled type="text" placeholder={infoCliente.horaAgendamentoPost}></input>
+                {!valHoraAgendamento ?
                     <p className="error-message">Selecione uma data para agendar.</p>
                     : ''
-                } */}
+                }
 
 
                 <div className="FormAgendamento-bt-horarios-disponiveis">
@@ -420,24 +431,24 @@ export default function FormAgendamento(props) {
                     maxLength="40"
                     minLength='3'
                 ></input>
-                {/* {valName ?
+                {valName ?
                     <p className="error-message">
                         O nome deve ter no mínimo 3 caracteres. <br />
                         O nome deve ter no máximo 40 caracteres. <br />
                         O nome não pode conter caracteres especiais.
                     </p>
                     : ''
-                } */}
+                }
 
                 <label className="FormAgendamento-espacamento ">E-mail:</label>
                 <input
                     type="email"
                     onChange={handleChangeEmailCliente}>
                 </input>
-                {/* {valEmail ?
+                {valEmail ?
                     <p className="error-message">Insira um e-mail válido.</p>
                     : ''
-                } */}
+                }
 
 
                 <label className="FormAgendamento-espacamento">Telefone:</label>
@@ -446,10 +457,10 @@ export default function FormAgendamento(props) {
                     onChange={handleChangeTelefoneCliente}
                 >
                 </input>
-                {/* {valContato ?
+                {infoCliente.telefoneCliente == '' ?
                     <p className="error-message">Insira um contato válido.</p>
                     : ''
-                } */}
+                }
 
                 <button type="submit" className="FormAgendamento-button FormAgendamento-espacamento">Agendar</button>
             </form>
