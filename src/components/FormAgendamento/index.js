@@ -263,8 +263,8 @@ export default function FormAgendamento(props) {
             barbeariasId: 1
         }
 
-            console.log(agendamento)
         if(valFormPostAgendamento(agendamento)){
+            console.log(agendamento)
     
             await axios.post(`https://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
                 .then(res => {
@@ -273,7 +273,7 @@ export default function FormAgendamento(props) {
                     navigate('/confirmacao-agendamento')
                 })
                 .catch(() => {
-                    // console.log('Deu ruim')
+                    console.log('Deu ruim')
                 })
         } else {
             // console.log('Impossível realizar um agendamento!')
@@ -411,7 +411,7 @@ export default function FormAgendamento(props) {
                     })
                 }
 
-                <label>Hora Selecionada: <span className="span-hora">{infoCliente.horaAgendamentoPost}</span></label>
+                <label>Hora Selecionada: </label>
                 <input disabled type="text" placeholder={infoCliente.horaAgendamentoPost}></input>
                 {!valHoraAgendamento ?
                     <p className="error-message">Selecione uma data para agendar.</p>

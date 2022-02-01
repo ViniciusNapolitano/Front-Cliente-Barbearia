@@ -1,0 +1,83 @@
+.CardAgendamento {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: end;
+    padding: 4px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+    background-color: #fff;
+}
+
+.CardAgendamento-wrap {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    /* padding-top: 32px; */
+    color: rgb(51, 51, 51);
+    /* border: 1px dashed deepskyblue; */
+}
+
+.CardAgendamento-wrap div {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    text-align: center;
+    padding: 8px;
+    /* background-color: #B78865; */
+    border-radius: 5px;
+}
+
+.CardAgendamento-wrap div p:first-child {
+    border-bottom: 1px solid #515151;
+}
+
+.CardAgendamento-info-tipo {
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.CardAgendamento-info-valor {
+    font-weight: 400;
+    font-size: 1rem;
+    margin-top: 4px;
+}
+
+.CardAgendamento button {
+    width: auto;
+    height: auto;
+    font-size: .8rem;
+    font-weight: 600;
+    padding: 4px 8px;
+    margin: 8px auto 0 auto;
+    border: 2px solid #B78865;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #B78865;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .CardAgendamento-info-tipo{
+        font-size: 1rem;
+    }
+
+    .CardAgendamento-info-valor{
+        font-size: .8rem;
+        padding: 2px;
+    }
+
+    .CardAgendamento-wrap div {
+        margin-bottom: 4px;
+    }
+
+    .CardAgendamento button {
+        margin: 8px auto;
+    }
+}
