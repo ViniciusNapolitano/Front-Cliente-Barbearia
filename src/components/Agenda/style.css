@@ -23,6 +23,7 @@
 
 @media (max-width: 768px) {
     .Agenda-section{
+        width: 100%;
         padding: 8px;
     }
 

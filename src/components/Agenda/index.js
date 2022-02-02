@@ -4,11 +4,11 @@ import CardAgendamento from '../CardAgendamento'
 import './style.css'
 
 export default function Agenda(props) {
-    console.log(props.agendamentos)
 
     const listarCards = () => {
         return props.agendamentos.map(agendamento => {
             return <CardAgendamento
+                agendamento={agendamento}
                 hora={agendamento.horario}
                 servico={agendamento.servicos.nomeServico}
                 cliente={agendamento.name}
@@ -19,11 +19,6 @@ export default function Agenda(props) {
     return(
         <section className='Agenda-section'>
             <div className='Agenda-esteira-agendamentos'>
-                {/* <CardAgendamento/>
-                <CardAgendamento/>
-                <CardAgendamento/>
-                <CardAgendamento/>
-                <CardAgendamento/> */}
                 {listarCards()}
             </div>
         </section>

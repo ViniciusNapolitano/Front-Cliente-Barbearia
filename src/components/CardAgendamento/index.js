@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 
 import './style.css'
 
+import { EstadoContext } from "../Providers/estado";
+
 export default function CardAgendamento(props) {
+
+    const { maisDetalhes, setMaisDetalhes, agendamento, setAgendamento } = React.useContext(EstadoContext)
+
+    const modalDetalhes = () => {
+        setMaisDetalhes(!maisDetalhes)
+        setAgendamento(props.agendamento)
+    }
+
     return (
-        <div className="CardAgendamento">
+        <div className="CardAgendamento" onClick={modalDetalhes}>
             <div className="CardAgendamento-wrap">
                 <div>
                     <p className="CardAgendamento-info-tipo">Hora</p>

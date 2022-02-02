@@ -8,12 +8,16 @@ import Cabecalho from '../../components/CabecalhoSecundario'
 import axios from 'axios'
 // import { Link } from 'react-router-dom'
 
+import { EstadoContext } from "../../components/Providers/estado";
+
 export default function AgendaBarbeiro() {
 
     const [data] = useState(new Date())
     const [dataFormatada, setDataFormatada] = useState('')
     const [barbearia, setBarbearia] = useState('')
     const [listaAgendamentos, setListaAgendamentos] = useState([])
+
+    const { maisDetalhes, setMaisDetalhes, agendamento } = React.useContext(EstadoContext)
 
     let nomeBarbeiro = ''
 
@@ -42,7 +46,7 @@ export default function AgendaBarbeiro() {
                 setListaAgendamentos(res.data)
             })
             .catch(() => {
-                // console.log('Deu ruim')
+                console.log('Deu ruim')
             })
     }
 
@@ -77,6 +81,28 @@ export default function AgendaBarbeiro() {
 
     return (
         <>
+            {
+                maisDetalhes
+                    ? <div className='AgendaBarbeiro-pelicula-maisdetalhes'>
+                        <div className='AgendaBarbeiro-modal'>
+                            <div className='AgendaBarbeiro-wrap-fechar-modal'>
+                                <button className='AgendaBarbeiro-fechar-modal' onClick={() => setMaisDetalhes(false)}>X</button>
+                            </div>
+                                <h1>Detalhes do Agendamento</h1>
+                            <div className='AgendaBarbeiro-wrap-modal-content'>
+                                <p><span className='AgendaBarbeiro-span-bold'>Barbeiro: </span>{agendamento.barbeiros.nameBarbeiro}</p>
+                                <p><span className='AgendaBarbeiro-span-bold'>Cliente: </span>{agendamento.name}</p>
+                                <p><span className='AgendaBarbeiro-span-bold'>Contato: </span>{agendamento.contato}</p>
+                                <p><span className='AgendaBarbeiro-span-bold'>E-mail: </span>{agendamento.email}</p>
+                                <p><span className='AgendaBarbeiro-span-bold'>Horário: </span>{agendamento.horario.slice(11, 16).toString()}h</p>
+                                <p><span className='AgendaBarbeiro-span-bold'>Serviço: </span>{agendamento.servicos.nomeServico}</p>
+                                <p><span className='AgendaBarbeiro-span-bold'>Duração Serviço: </span>{agendamento.servicos.tempoServico.slice(11, 16).toString()}h</p>
+                                <p><span className='AgendaBarbeiro-span-bold'>Preço: </span>{agendamento.servicos.precoServico} R$</p>
+                            </div>
+                        </div>
+                    </div>
+                    : ''
+            }
             <Cabecalho />
             <section className='AgendaBarbeiro-section'>
                 <h1 className='AgendaBarbeiro-h1'>Agendamentos do dia:</h1>
@@ -91,7 +117,7 @@ export default function AgendaBarbeiro() {
                             : ''
                     }
                 </select>
-                    
+
                 <Agenda agendamentos={listaAgendamentos} />
             </section>
             <Rodape />

@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+
 .AgendaBarbeiro-section {
     max-width: 1200px;
     display: flex;
@@ -31,4 +34,114 @@
     color: #515151;
     font-size: 2rem;
     margin-top: 32px;
+}
+
+.AgendaBarbeiro-pelicula-maisdetalhes {
+    position: fixed;
+    display: flex;
+    right: 0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.AgendaBarbeiro-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
+    height: auto;
+    margin: auto;
+    padding: 16px;
+    padding-bottom: 54px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+
+}
+
+.AgendaBarbeiro-wrap-fechar-modal {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
+.AgendaBarbeiro-fechar-modal {
+    width: 32px;
+    height: 32px;
+    color: #fff;
+    background-color: #B78865;
+    border: none;
+    border-radius: 50%;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.AgendaBarbeiro-modal h1 {
+    width: 90%;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 300;
+    font-size: 2rem;
+    text-align: center;
+    border-bottom: 1px solid #B78865;
+    margin-top: 8px;
+}
+
+.AgendaBarbeiro-wrap-modal-content {
+    color: #515151;
+    margin-top: 32px;
+    font-size: 1.2rem;
+}
+
+.AgendaBarbeiro-span-bold {
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .AgendaBarbeiro-section {
+        width: 100%;
+    }
+    
+    .AgendaBarbeiro-h1 {
+        width: 90%;
+        height: auto;
+        font-size: 1.5rem;
+        justify-content: center;
+
+    }
+
+    .AgendaBarbeiro-modal {
+     width: 90%;
+    }
+
+    .AgendaBarbeiro-modal h1 {
+        font-size: 1.6rem;
+    }
+
+    .AgendaBarbeiro-input-data, .AgendaBarbeiro-select {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .AgendaBarbeiro-wrap-modal-content {
+        font-size: 1rem;
+    }
+
+    .AgendaBarbeiro-h1 {
+        height: auto;
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+    .AgendaBarbeiro-modal h1 {
+        text-align: center;
+    }
+
+    .AgendaBarbeiro-input-data, .AgendaBarbeiro-select {
+        font-size: 1rem;
+    }
 }

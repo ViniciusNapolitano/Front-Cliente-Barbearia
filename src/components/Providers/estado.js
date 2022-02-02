@@ -13,11 +13,18 @@ export const EstadoProvider = (props) => {
 
     const [tempoServico, setTempoServico] = useState('2022-01-11T01:00:00')
 
+    const [maisDetalhes, setMaisDetalhes] = useState(false)
+
+    const [agendamento, setAgendamento] = useState('')
+
+
     return (
         <EstadoContext.Provider value={{
             barbearia, setBarbearia, 
             nomeServico, setNomeServico,
-            tempoServico, setTempoServico
+            tempoServico, setTempoServico,
+            maisDetalhes, setMaisDetalhes,
+            agendamento, setAgendamento
             }}>
             {props.children}
         </EstadoContext.Provider>
