@@ -4,37 +4,42 @@ import './style.css'
 
 import Rodape from '../../components/Rodape'
 
-import axios from 'axios';
+import { login } from '../../services/Autenticacao.service.ts'
+import { storeToken } from '../../services/Autenticacao.service.ts'
 
-
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Login() {
-    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const handleSubmitPost = event => {
+    let navigate = useNavigate()
+
+    const handleSubmitPost = async (event) => {
         event.preventDefault()
 
-        const login = {
-            username: username,
+        const credenciais = {
+            email: email,
+            // username: username,
             password: password
         }
 
-        console.log(login)
-        axios.post(`https://mybarberapi.herokuapp.com/api/v1/aut`, login)
-            .then(res => {
-                console.log(res);
-                console.log(res.data);
+        // console.log(credenciais)
 
-            })
-            .catch(() => {
-                console.log('Deu ruim')
-            })
+        try {
+            const user = await login(credenciais)
+            // http.defaults.headers.authorization = `Bearer ${user.token}`
+            storeToken(user.token)
+            navigate('/agenda-barbeiro')
+        } catch {
+            console.log('Autenticação falhou!')
+        }
+
     }
 
-    const handleUsuario = event => {
-        setUsername(event.target.value)
+    const handleEmail = event => {
+        setEmail(event.target.value)
     }
 
     const handleSenha = event => {
@@ -51,8 +56,8 @@ export default function Login() {
                             <h1>Login Agenda</h1>
                         </div>
 
-                        <label>Usuário:</label>
-                        <input type="text" onChange={handleUsuario}></input>
+                        <label>E-mail:</label>
+                        <input type="email" onChange={handleEmail}></input>
 
                         <label>Senha:</label>
                         <input type="password" onChange={handleSenha}></input>

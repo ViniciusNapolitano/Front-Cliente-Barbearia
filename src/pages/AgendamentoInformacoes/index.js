@@ -33,7 +33,7 @@ export default class AgendamentoInformacoes extends React.Component {
             <>
                 {this.state.carregada ? <>
                     <Cabecalho />
-                    <FormAgendamento servicos={this.infos.servicos}/>
+                    <FormAgendamento servicos={this.infos.servicos} barbeiros={this.infos.barbeiros}/>
                     <Rodape />
                 </> : ''}
             </>

@@ -16,12 +16,12 @@ import validator from 'validator'
 import validatorTel from "validar-telefone";
 
 export default function FormAgendamento(props) {
-
+    // console.log(props.barbeiros)
     let navigate = useNavigate()
     const { barbearia, nomeServico, tempoServico } = React.useContext(EstadoContext)
     const [data, setData] = useState(new Date())
     const [resAgendamentoDia, setResAgendamentoDia] = useState('')
-    
+
     // const [nomeCliente, setNomeCliente] = useState('')
     // const [emailCliente, setEmailCliente] = useState('')
     // const [telefoneCliente, setTelefoneCliente] = useState('')
@@ -35,7 +35,7 @@ export default function FormAgendamento(props) {
         horaAgendamentoPost: '',
         idBarbeiro: ''
     })
-    
+
     const [fotoBarbeiro, setFotoBarbeiro] = useState(false)
     const [horariosDisponiveis, setHorariosDisponiveis] = useState(false)
 
@@ -44,26 +44,21 @@ export default function FormAgendamento(props) {
     const [valHoraAgendamento, setValHoraAgendamento] = useState(false)
     const [valName, setValName] = useState(false)
     const [valEmail, setValEmail] = useState(false)
-    // const [valContato, setValContato] = useState(false)
 
-    // name: nomeCliente,
-    //         email: emailCliente,
-    //         contato: telefoneCliente,
-    //         horario: data + 'T' + horaAgendamentoPost + ':00',
-    //         servicosId: barbearia,
-    //         barbeirosId: idBarbeiro,
-    //         barbeariasId: 1
+    const [horaMinFunc, setHoraMinFunc] = useState(5)
+    const [horaMaxFunc, setHoraMaxFunc] = useState(18)
 
     let agendamentoDia
     let horaAgendamento
     let listaHoraAgendamento = []
     let tempoAgendamento
     let ListaTempoAgendamento = []
-    let horaMinFunc = 5
-    let horaMaxFunc = 18
+    // let horaMinFunc = 5
+    // let horaMaxFunc = 18
     let tamDuracaoServico = 0
     let horaServico = parseFloat(tempoServico.slice(11, 16).toString().replace(':', '.'))
     let listaHoraDisponivel = []
+    let idBarbeiroSelecionado
 
 
     useEffect(() => {
@@ -119,22 +114,22 @@ export default function FormAgendamento(props) {
         }
     }
 
-    const valProxAgenDisponivel = (count) => {
-        let horarioDisponivel = true
-        listaHoraAgendamento.map(agendamento => {
-            console.log('Count: ' + count)
-            console.log('HoraServico: ' + horaServico)
-            console.log('agendamento: ' + agendamento)
-            if (agendamento > count) {
-                if (count + horaServico > agendamento) {
-                    horarioDisponivel = false
-                }
-            }
-            console.log('horarioDisponivel: ' + horarioDisponivel)
-        })
-        return horarioDisponivel
+    // const valProxAgenDisponivel = (count) => {
+    //     let horarioDisponivel = true
+    //     listaHoraAgendamento.map(agendamento => {
+    //         console.log('Count: ' + count)
+    //         console.log('HoraServico: ' + horaServico)
+    //         console.log('agendamento: ' + agendamento)
+    //         if (agendamento > count) {
+    //             if (count + horaServico > agendamento) {
+    //                 horarioDisponivel = false
+    //             }
+    //         }
+    //         console.log('horarioDisponivel: ' + horarioDisponivel)
+    //     })
+    //     return horarioDisponivel
 
-    }
+    // }
 
     const initListaHorariosDisponiveis = () => {
         listaHoraDisponivel = []
@@ -215,37 +210,66 @@ export default function FormAgendamento(props) {
 
     // ##### HANDLES DO FORMULÁRIO #####
     const handleChangeBarbeiro = event => {
-        setInfoCliente({...infoCliente, idBarbeiro: event.target.value})
+        idBarbeiroSelecionado = event.target.value
+        setInfoCliente({ ...infoCliente, idBarbeiro: idBarbeiroSelecionado })
+        // horaMaxFunc = id
+        // console.log(idBarbeiroSelecionado)
+
     }
 
     const handleChangeData = event => {
+        let dayName = new Array("domingo", "segunda", "terca", "quarta", "quinta", "sexta", "sabado")
+        let dayNameSelecionado
         agendamentoDia = format(event, "yyyy-MM-dd")
+
+
+
         setData(agendamentoDia)
         filtrarAgendamentoData(agendamentoDia)
-        setValDataAgendamento(true)
+
+        dayNameSelecionado = dayName[event.getDay()]
+        // console.log(event)
+        props.barbeiros.map(barbeiro => {
+            // console.log(barbeiro)
+
+            if (barbeiro.idBarbeiro == infoCliente.idBarbeiro) {
+
+                const diasDaSemana = {
+                    domingo: 'btrhbr',
+                    segunda: () => {
+                        setHoraMinFunc(barbeiro.agendas.segunda[0])
+                        setHoraMaxFunc(barbeiro.agendas.segunda[1])
+                    }
+                }
+                diasDaSemana[dayNameSelecionado]()
+                console.log('MAX: ' + horaMaxFunc)
+                console.log('MIN: ' + horaMinFunc)
+                setValDataAgendamento(true)
+            }
+        })
     }
 
     const handleChangeHora = event => {
         // setHoraAgendamentoPost(event.target.value)
-        setInfoCliente({...infoCliente, horaAgendamentoPost: event.target.value})
+        setInfoCliente({ ...infoCliente, horaAgendamentoPost: event.target.value })
 
         setValHoraAgendamento(true)
     }
 
     const handleChangeNomeCliente = event => {
         // setNomeCliente(event.target.value)
-        setInfoCliente({...infoCliente, nomeCliente: event.target.value})
+        setInfoCliente({ ...infoCliente, nomeCliente: event.target.value })
     }
 
     const handleChangeEmailCliente = event => {
         // setEmailCliente(event.target.value)
-        setInfoCliente({...infoCliente, emailCliente: event.target.value})
+        setInfoCliente({ ...infoCliente, emailCliente: event.target.value })
 
     }
 
     const handleChangeTelefoneCliente = event => {
         // setTelefoneCliente(event.target.value)
-        setInfoCliente({...infoCliente, telefoneCliente: event.target.value})
+        setInfoCliente({ ...infoCliente, telefoneCliente: event.target.value })
 
     }
 
@@ -263,9 +287,9 @@ export default function FormAgendamento(props) {
             barbeariasId: 1
         }
 
-        if(valFormPostAgendamento(agendamento)){
+        if (valFormPostAgendamento(agendamento)) {
             console.log(agendamento)
-    
+
             await axios.post(`https://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
                 .then(res => {
                     console.log(res);
@@ -421,7 +445,7 @@ export default function FormAgendamento(props) {
 
                 <div className="FormAgendamento-bt-horarios-disponiveis">
                     {
-                        horariosDisponiveis ? listarHorariosDisponiveis() : ''
+                        horariosDisponiveis && valDataAgendamento ? listarHorariosDisponiveis() : ''
                     }
                 </div>
 
