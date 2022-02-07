@@ -20,6 +20,7 @@ export default function FormAgendamento(props) {
     let navigate = useNavigate()
     const { barbearia, nomeServico, tempoServico } = React.useContext(EstadoContext)
     const [data, setData] = useState(new Date())
+    const [dataSelecionada, setDataSelecionada] = useState(new Date())
     const [resAgendamentoDia, setResAgendamentoDia] = useState('')
 
     // const [nomeCliente, setNomeCliente] = useState('')
@@ -36,6 +37,10 @@ export default function FormAgendamento(props) {
         idBarbeiro: ''
     })
 
+    var dataMinAgendamento = new Date()
+    var dataMaxAgendamento = new Date()
+    dataMaxAgendamento.setMonth((dataMinAgendamento.getMonth() + 1))
+
     const [fotoBarbeiro, setFotoBarbeiro] = useState(false)
     const [horariosDisponiveis, setHorariosDisponiveis] = useState(false)
 
@@ -47,6 +52,7 @@ export default function FormAgendamento(props) {
 
     const [horaMinFunc, setHoraMinFunc] = useState(5)
     const [horaMaxFunc, setHoraMaxFunc] = useState(18)
+
 
     let agendamentoDia
     let horaAgendamento
@@ -143,6 +149,16 @@ export default function FormAgendamento(props) {
         listaHoraAgendamento.map(horaAgendada => {
             // console.log('hora: ' + hora)
             // console.log('horaAgendada: ' + horaAgendada)
+            let a = data + '-' + infoCliente.horaAgendamentoPost.replace(':', '-')
+            // console.log(a)
+            let b = format(dataMinAgendamento, "yyyy-MM-dd-HH-MM")
+            // console.log(b)
+            if(a < b){
+                console.log('Horário não permitido')
+            }
+            else {
+                console.log('Horário PERMITIDOOOO')
+            }
             if (hora == horaAgendada) {
                 for (let i = 0; i < listaHoraDisponivel.length; i++) {
                     if (listaHoraDisponivel[i][0] == hora) {
@@ -222,7 +238,7 @@ export default function FormAgendamento(props) {
         let dayNameSelecionado
         agendamentoDia = format(event, "yyyy-MM-dd")
 
-
+        setDataSelecionada(event)
 
         setData(agendamentoDia)
         filtrarAgendamentoData(agendamentoDia)
@@ -235,15 +251,36 @@ export default function FormAgendamento(props) {
             if (barbeiro.idBarbeiro == infoCliente.idBarbeiro) {
 
                 const diasDaSemana = {
-                    domingo: 'btrhbr',
+                    domingo: () => {
+                        setHoraMinFunc(barbeiro.agendas.domingo[0])
+                        setHoraMaxFunc(barbeiro.agendas.domingo[1])
+                    },
                     segunda: () => {
                         setHoraMinFunc(barbeiro.agendas.segunda[0])
                         setHoraMaxFunc(barbeiro.agendas.segunda[1])
+                    },
+                    terca: () => {
+                        setHoraMinFunc(barbeiro.agendas.terca[0])
+                        setHoraMaxFunc(barbeiro.agendas.terca[1])
+                    },
+                    quarta: () => {
+                        setHoraMinFunc(barbeiro.agendas.quarta[0])
+                        setHoraMaxFunc(barbeiro.agendas.quarta[1])
+                    },
+                    quinta: () => {
+                        setHoraMinFunc(barbeiro.agendas.quinta[0])
+                        setHoraMaxFunc(barbeiro.agendas.quinta[1])
+                    },
+                    sexta: () => {
+                        setHoraMinFunc(barbeiro.agendas.sexta[0])
+                        setHoraMaxFunc(barbeiro.agendas.sexta[1])
+                    },
+                    sabado: () => {
+                        setHoraMinFunc(barbeiro.agendas.sabado[0])
+                        setHoraMaxFunc(barbeiro.agendas.sabado[1])
                     }
                 }
                 diasDaSemana[dayNameSelecionado]()
-                console.log('MAX: ' + horaMaxFunc)
-                console.log('MIN: ' + horaMinFunc)
                 setValDataAgendamento(true)
             }
         })
@@ -292,8 +329,8 @@ export default function FormAgendamento(props) {
 
             await axios.post(`https://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
                 .then(res => {
-                    console.log(res);
-                    console.log(res.data);
+                    // console.log(res);
+                    // console.log(res.data);
                     navigate('/confirmacao-agendamento')
                 })
                 .catch(() => {
@@ -409,9 +446,12 @@ export default function FormAgendamento(props) {
                     <Calendar
                         className="FormAgendamento-calendar"
                         onChange={handleChangeData}
+                        minDate={dataMinAgendamento}
+                        maxDate={dataMaxAgendamento}
                     // value={data}
                     />
                 </div>
+
                 {!valDataAgendamento ?
                     <p className="error-message">Selecione uma data para agendar.</p>
                     : ''
