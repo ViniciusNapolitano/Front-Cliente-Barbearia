@@ -42,7 +42,7 @@ export default function ListaAgendamentos(props) {
     }
 
     const listarAgendamentos = () => {
-        console.log(resAgendamentoDia)
+        // console.log(resAgendamentoDia)
         return resAgendamentoDia.map(agendamento => {
             return <tr>
                 <th>{agendamento.idAgendamento}</th>

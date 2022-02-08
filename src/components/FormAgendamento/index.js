@@ -18,7 +18,7 @@ import validatorTel from "validar-telefone";
 export default function FormAgendamento(props) {
     // console.log(props.barbeiros)
     let navigate = useNavigate()
-    const { barbearia, nomeServico, tempoServico } = React.useContext(EstadoContext)
+    // const { barbearia, tempoServico } = React.useContext(EstadoContext)
     const [data, setData] = useState(new Date())
     const [dataSelecionada, setDataSelecionada] = useState(new Date())
     const [resAgendamentoDia, setResAgendamentoDia] = useState('')
@@ -36,6 +36,10 @@ export default function FormAgendamento(props) {
         horaAgendamentoPost: '',
         idBarbeiro: ''
     })
+
+    var idServico = window.localStorage.getItem('idServico')
+    var nomeServico = window.localStorage.getItem('nomeServico')
+    var tempoServico = window.localStorage.getItem('tempoServico')
 
     var dataMinAgendamento = new Date()
     var dataMaxAgendamento = new Date()
@@ -66,6 +70,9 @@ export default function FormAgendamento(props) {
     let listaHoraDisponivel = []
     let idBarbeiroSelecionado
 
+    let listaGambiarra = []
+
+
 
     useEffect(() => {
         props.servicos.map(servico => servico.servicosBarbeiros.map(barbeiro => {
@@ -88,7 +95,7 @@ export default function FormAgendamento(props) {
 
     const listarBarbeiros = () => {
         return props.servicos.map(servico => {
-            if (servico.idServico == barbearia) {
+            if (servico.idServico == idServico) {
                 return servico.servicosBarbeiros.map(barbeiro => {
                     return <option key={barbeiro.barbeiros.idBarbeiro} value={barbeiro.barbeiros.idBarbeiro}>{barbeiro.barbeiros.nameBarbeiro}</option>
                 })
@@ -143,32 +150,70 @@ export default function FormAgendamento(props) {
         for (let i = horaMinFunc; i < horaMaxFunc; i += .5) {
             listaHoraDisponivel.push([i, ' - Disponivel'])
         }
+        // console.log(listaHoraDisponivel)
     }
 
     const valHorariosBloqueados = (hora) => {
-        listaHoraAgendamento.map(horaAgendada => {
+        // console.log(listaHoraDisponivel)
+        listaHoraDisponivel.map(horaAgendada => {
             // console.log('hora: ' + hora)
             // console.log('horaAgendada: ' + horaAgendada)
-            let a = data + '-' + infoCliente.horaAgendamentoPost.replace(':', '-')
+
+
+            // let a = data + '-' + infoCliente.horaAgendamentoPost.replace(':', '-')
+            let a
             // console.log(a)
             let b = format(dataMinAgendamento, "yyyy-MM-dd-HH-MM")
             // console.log(b)
-            if(a < b){
-                console.log('Horário não permitido')
+            a = data + '-' + hora
+            // console.log(a)
+            if (a < b) {
+                a = a.slice(11, 16).toString().replace('-', '.')
+                // console.log(horaAgendada[0] == a)
+                if (horaAgendada[0] == a)
+                    listaGambiarra.push(a)
+                // console.log(listaGambiarra)
+                // console.log(horaAgendada[0])
+                // console.log('Horário não permitido')
+                // console.log('a? ' + a)
+                // console.log('b? ' + b)
             }
             else {
-                console.log('Horário PERMITIDOOOO')
+                // console.log('Horário PERMITIDOOOO')
             }
-            if (hora == horaAgendada) {
+
+            for (let i = 0; i < listaHoraDisponivel.length; i++) {
+                
+                // console.log(listaHoraDisponivel[i][0])
+                listaGambiarra.map(item => {
+                    if (item == listaHoraDisponivel[i][0]) {
+                        listaHoraDisponivel[i][1] = ' - Indisponível XXXXXXXXXX'
+                    }
+                })
+            }
+
+            // console.log(hora)
+            if (hora == null) {
                 for (let i = 0; i < listaHoraDisponivel.length; i++) {
+                    // console.log(listaHoraDisponivel[i][0])
+
+
                     if (listaHoraDisponivel[i][0] == hora) {
+
                         for (let j = 0; j < tamDuracaoServico; j++) {
-                            listaHoraDisponivel[i + j][1] = ' - Indisponível XXXXXXXXXX'
+                            try {
+                                listaHoraDisponivel[i + j][1] = ' - Indisponível XXXXXXXXXX'
+
+
+                            } catch {
+
+                            }
                         }
                     }
 
                 }
             }
+            // console.log(listaHoraDisponivel)
         })
     }
 
@@ -177,10 +222,10 @@ export default function FormAgendamento(props) {
         calcDuracaoServico(duracao)
         for (let i = 0; i < listaHoraDisponivel.length; i++) {
             let count = 0
-            if (listaHoraDisponivel[i][1] == ' - Disponivel') {
+            if (listaHoraDisponivel[i][1] == " - Disponivel") {
                 for (let j = 0; j < tamDuracaoServico; j++) {
                     try {
-                        if (listaHoraDisponivel[i + j][1] == ' - Disponivel') {
+                        if (listaHoraDisponivel[i + j][1] == " - Disponivel") {
                             count++
                             if (count == tamDuracaoServico)
                                 listaHoraDisponivel[i][1] = null
@@ -216,7 +261,7 @@ export default function FormAgendamento(props) {
             horaCompleta = horaCompleta.toString().replace('.5:00', ':30')
             if (horaCompleta.length == 4)
                 horaCompleta = '0' + horaCompleta
-            // console.log('Tamanho: ' + horaCompleta.length)
+            // console.log('hora[1]: ' + hora[1])
 
             if (hora[1] == null)
                 return <button className="FormAgendamento-li-horaDisp" type="button" onClick={handleChangeHora} value={horaCompleta}>{horaCompleta}</button>
@@ -319,13 +364,13 @@ export default function FormAgendamento(props) {
             email: infoCliente.emailCliente,
             contato: infoCliente.telefoneCliente,
             horario: data + 'T' + infoCliente.horaAgendamentoPost + ':00',
-            servicosId: barbearia,
+            servicosId: idServico,
             barbeirosId: infoCliente.idBarbeiro,
             barbeariasId: 1
         }
 
         if (valFormPostAgendamento(agendamento)) {
-            console.log(agendamento)
+            // console.log(agendamento)
 
             await axios.post(`https://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
                 .then(res => {

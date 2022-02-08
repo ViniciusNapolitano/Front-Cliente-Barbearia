@@ -13,8 +13,12 @@ export default function ItemServico(props) {
 
     function servicoEscolhido() {
         setBarbearia(props.idServico)
+        window.localStorage.setItem('idServico', props.idServico)
         setNomeServico(props.nomeServico)
+        window.localStorage.setItem('nomeServico', props.nomeServico)
         setTempoServico(props.tempoServico)
+        window.localStorage.setItem('tempoServico', props.tempoServico)
+
     }
 
     return (

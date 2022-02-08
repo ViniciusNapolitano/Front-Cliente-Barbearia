@@ -23,6 +23,9 @@ export default class AgendamentoInformacoes extends React.Component {
             .then(res => {
                 this.infos = res.data;
                 this.setState({ carregada: true })
+                // console.log(this.infos.servicos)
+                // window.localStorage.setItem('servicos', JSON.stringify(this.infos.servicos))
+                // console.log(JSON.parse(window.localStorage.getItem('servicos')))
                 // console.log(this.infos)
                 // console.log(this.infos.servicos.map(servico => servico.servicosBarbeiros.map(barbeiro => barbeiro.barbeiros.nameBarbeiro)))
             })
@@ -33,7 +36,9 @@ export default class AgendamentoInformacoes extends React.Component {
             <>
                 {this.state.carregada ? <>
                     <Cabecalho />
-                    <FormAgendamento servicos={this.infos.servicos} barbeiros={this.infos.barbeiros}/>
+                    <FormAgendamento 
+                    servicos={this.infos.servicos} 
+                    barbeiros={this.infos.barbeiros} />
                     <Rodape />
                 </> : ''}
             </>
