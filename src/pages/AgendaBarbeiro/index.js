@@ -4,7 +4,7 @@ import './style.css'
 
 import Rodape from '../../components/Rodape'
 import Agenda from '../../components/Agenda'
-import Cabecalho from '../../components/CabecalhoSecundario'
+import Cabecalho from '../../components/CabecalhoBarbeiro'
 import axios from 'axios'
 // import { Link } from 'react-router-dom'
 
@@ -59,6 +59,8 @@ export default function AgendaBarbeiro() {
 
     const listarBarbeiros = () => {
         let listaBarbeiros = []
+        // setPrimeiroAcesso(false)
+
 
         return barbearia.servicos.map(servico => {
             return servico.servicosBarbeiros.map(barbeiro => {
@@ -75,6 +77,8 @@ export default function AgendaBarbeiro() {
 
         getBarbearia()
     }, [])
+
+
 
     const handleChangeData = event => {
         setDataFormatada(event.target.value)
@@ -127,7 +131,9 @@ export default function AgendaBarbeiro() {
                         <option key="0" value="0">Selecionar</option>
                         {
                             barbearia != '' ?
+
                                 listarBarbeiros()
+
                                 : ''
                         }
                     </select>

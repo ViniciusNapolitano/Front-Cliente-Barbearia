@@ -57,6 +57,7 @@ export default function FormAgendamento(props) {
     const [horaMinFunc, setHoraMinFunc] = useState(5)
     const [horaMaxFunc, setHoraMaxFunc] = useState(18)
 
+    const [buttonBloqueado, setButtonBloqueado] = useState(true)
 
     let agendamentoDia
     let horaAgendamento
@@ -183,7 +184,7 @@ export default function FormAgendamento(props) {
             }
 
             for (let i = 0; i < listaHoraDisponivel.length; i++) {
-                
+
                 // console.log(listaHoraDisponivel[i][0])
                 listaGambiarra.map(item => {
                     if (item == listaHoraDisponivel[i][0]) {
@@ -355,10 +356,25 @@ export default function FormAgendamento(props) {
 
     }
 
+    useEffect(() =>{
+        if( 
+            infoCliente.emailCliente == '' ||
+            infoCliente.horaAgendamentoPost == '' ||
+            infoCliente.idBarbeiro == '' ||
+            infoCliente.nomeCliente == '' ||
+            infoCliente.telefoneCliente == ''
+        ){
+            setButtonBloqueado(true)
+        } else {
+            setButtonBloqueado(false)
+        }
+    })
+
     // ##### HANDLES DE SUBMIT #####
     const handleSubmitPostAgemdamento = async event => {
         event.preventDefault()
-
+        console.log(infoCliente)
+        
         const agendamento = {
             name: infoCliente.nomeCliente,
             email: infoCliente.emailCliente,
@@ -462,7 +478,7 @@ export default function FormAgendamento(props) {
                 <label className="FormAgendamento-espacamento">Serviço:</label>
                 <input disabled type="text" placeholder={nomeServico}></input>
 
-                <label className="FormAgendamento-espacamento">Cabeleleiro(a):</label>
+                <label className="FormAgendamento-espacamento">Cabelereiro(a):</label>
                 <select name="select" onChange={handleChangeBarbeiro} className="FormAgendamento-select">
                     <option key="0" value="0">Selecionar</option>
                     {listarBarbeiros()}
@@ -571,7 +587,15 @@ export default function FormAgendamento(props) {
                     : ''
                 }
 
-                <button type="submit" className="FormAgendamento-button FormAgendamento-espacamento">Agendar</button>
+                <button type="submit"
+                    className=
+                    {buttonBloqueado ?
+                        "FormAgendamento-button  FormAgendamento-espacamento buttonBloqueado"
+                        :
+                        'FormAgendamento-button FormAgendamento-espacamento '
+                    }
+                    disabled={buttonBloqueado}
+                >Agendar</button>
             </form>
         </section >
     )

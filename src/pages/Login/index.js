@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [autenticacaoFalhou, setAutenticacaoFalhou] = useState(false)
 
     let navigate = useNavigate()
 
@@ -31,11 +32,12 @@ export default function Login() {
             const user = await login(credenciais)
             // http.defaults.headers.authorization = `Bearer ${user.token}`
             storeToken(user.token)
+            setAutenticacaoFalhou(false)
             navigate('/agenda-barbeiro')
+            window.localStorage.setItem('barbeiro', user.nomeUsuario)
         } catch {
-            console.log('Autenticação falhou!')
+            setAutenticacaoFalhou(true)
         }
-
     }
 
     const handleEmail = event => {
@@ -62,9 +64,15 @@ export default function Login() {
                         <label>Senha:</label>
                         <input type="password" onChange={handleSenha}></input>
 
-                        <div className='Login-esqueci-senha-div'>
+                        {
+                            autenticacaoFalhou ?
+                                <label className='Login-errado'>E-mail ou senha incorreto!</label>
+                                : ''
+                        }
+
+                        {/* <div className='Login-esqueci-senha-div'>
                             <a href='#'>Esqueci minha senha.</a>
-                        </div>
+                        </div> */}
 
                         <button type='submit'>Entrar</button>
                     </form>

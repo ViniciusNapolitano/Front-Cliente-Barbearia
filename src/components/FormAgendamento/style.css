@@ -95,6 +95,8 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, .4);
 }
 
+
+
 abbr {
     text-decoration: none;
 }
@@ -153,6 +155,11 @@ li {
     color: red;
     font-size: .9rem;
     margin-top: -15px;
+}
+
+.buttonBloqueado {
+    background-color: #959595;
+    /* background-color: red; */
 }
 
 @media (max-width: 768px) {

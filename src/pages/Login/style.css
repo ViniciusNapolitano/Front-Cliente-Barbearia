@@ -98,6 +98,14 @@
     text-decoration: underline;
 }
 
+.Login-errado {
+    color: red;
+    font-size: .8rem;
+    font-weight: 400;
+    /* background-color: aquamarine; */
+    text-align: center;
+}
+
 @media (max-width: 768px) {
     .Login-section {
         background-image: url('../../assets/images/Login-background-p.jpg');
