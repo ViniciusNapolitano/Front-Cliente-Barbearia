@@ -14,15 +14,20 @@ import { EstadoContext } from "../Providers/estado";
 
 import validator from 'validator'
 import validatorTel from "validar-telefone";
-import { HorariosJaAgendados } from "../../services/HorariosDisponiveis.service";
 
 export default function FormAgendamento(props) {
-
+    // console.log(props.barbeiros)
     let navigate = useNavigate()
-
+    // const { barbearia, tempoServico } = React.useContext(EstadoContext)
     const [data, setData] = useState(new Date())
     const [dataSelecionada, setDataSelecionada] = useState(new Date())
-    const [resAgendamentoDia, setResAgendamentoDia] = useState([])
+    const [resAgendamentoDia, setResAgendamentoDia] = useState('')
+
+    // const [nomeCliente, setNomeCliente] = useState('')
+    // const [emailCliente, setEmailCliente] = useState('')
+    // const [telefoneCliente, setTelefoneCliente] = useState('')
+    // const [horaAgendamentoPost, setHoraAgendamentoPost] = useState('')
+    // const [idBarbeiro, setIdBarbeiro] = useState('')
 
     const [infoCliente, setInfoCliente] = useState({
         nomeCliente: '',
@@ -59,10 +64,16 @@ export default function FormAgendamento(props) {
     let listaHoraAgendamento = []
     let tempoAgendamento
     let ListaTempoAgendamento = []
+    // let horaMinFunc = 5
+    // let horaMaxFunc = 18
     let tamDuracaoServico = 0
     let horaServico = parseFloat(tempoServico.slice(11, 16).toString().replace(':', '.'))
     let listaHoraDisponivel = []
     let idBarbeiroSelecionado
+
+    let listaGambiarra = []
+
+
 
     useEffect(() => {
         props.servicos.map(servico => servico.servicosBarbeiros.map(barbeiro => {
@@ -77,7 +88,6 @@ export default function FormAgendamento(props) {
         await axios.get(`https://mybarberapi.herokuapp.com/api/v1/agendamentos/tenant/1?Date=${agendamentoDia}`)
             .then(res => {
                 setResAgendamentoDia(res.data)
-
                 setHorariosDisponiveis(true)
 
                 // console.log(res.data)
@@ -118,10 +128,155 @@ export default function FormAgendamento(props) {
         }
     }
 
+    // const valProxAgenDisponivel = (count) => {
+    //     let horarioDisponivel = true
+    //     listaHoraAgendamento.map(agendamento => {
+    //         console.log('Count: ' + count)
+    //         console.log('HoraServico: ' + horaServico)
+    //         console.log('agendamento: ' + agendamento)
+    //         if (agendamento > count) {
+    //             if (count + horaServico > agendamento) {
+    //                 horarioDisponivel = false
+    //             }
+    //         }
+    //         console.log('horarioDisponivel: ' + horarioDisponivel)
+    //     })
+    //     return horarioDisponivel
+
+    // }
+
+    const initListaHorariosDisponiveis = () => {
+        listaHoraDisponivel = []
+
+        for (let i = horaMinFunc; i < horaMaxFunc; i += .5) {
+            listaHoraDisponivel.push([i, ' - Disponivel'])
+        }
+        // console.log(listaHoraDisponivel)
+    }
+
+    const valHorariosBloqueados = (hora) => {
+        // console.log(listaHoraDisponivel)
+        listaHoraDisponivel.map(horaAgendada => {
+            // console.log('hora: ' + hora)
+            // console.log('horaAgendada: ' + horaAgendada)
+
+
+            // let a = data + '-' + infoCliente.horaAgendamentoPost.replace(':', '-')
+            let a
+            // console.log(a)
+            let b = format(dataMinAgendamento, "yyyy-MM-dd-HH-MM")
+            // console.log(b)
+            a = data + '-' + hora
+            // console.log(a)
+            if (a < b) {
+                a = a.slice(11, 16).toString().replace('-', '.')
+                // console.log(horaAgendada[0] == a)
+                if (horaAgendada[0] == a)
+                    listaGambiarra.push(a)
+                // console.log(listaGambiarra)
+                // console.log(horaAgendada[0])
+                // console.log('Horário não permitido')
+                // console.log('a? ' + a)
+                // console.log('b? ' + b)
+            }
+            else {
+                // console.log('Horário PERMITIDOOOO')
+            }
+
+            for (let i = 0; i < listaHoraDisponivel.length; i++) {
+
+                // console.log(listaHoraDisponivel[i][0])
+                listaGambiarra.map(item => {
+                    if (item == listaHoraDisponivel[i][0]) {
+                        listaHoraDisponivel[i][1] = ' - Indisponível XXXXXXXXXX'
+                    }
+                })
+            }
+
+            // console.log(hora)
+            if (hora == null) {
+                for (let i = 0; i < listaHoraDisponivel.length; i++) {
+                    // console.log(listaHoraDisponivel[i][0])
+
+
+                    if (listaHoraDisponivel[i][0] == hora) {
+
+                        for (let j = 0; j < tamDuracaoServico; j++) {
+                            try {
+                                listaHoraDisponivel[i + j][1] = ' - Indisponível XXXXXXXXXX'
+
+
+                            } catch {
+
+                            }
+                        }
+                    }
+
+                }
+            }
+            // console.log(listaHoraDisponivel)
+        })
+    }
+
+    const valTempoNecessarioDisponivel = () => {
+        let duracao = tempoServico.slice(11, 16).toString().replace(':', '.')
+        calcDuracaoServico(duracao)
+        for (let i = 0; i < listaHoraDisponivel.length; i++) {
+            let count = 0
+            if (listaHoraDisponivel[i][1] == " - Disponivel") {
+                for (let j = 0; j < tamDuracaoServico; j++) {
+                    try {
+                        if (listaHoraDisponivel[i + j][1] == " - Disponivel") {
+                            count++
+                            if (count == tamDuracaoServico)
+                                listaHoraDisponivel[i][1] = null
+                        }
+                    } catch {
+                    }
+                }
+            }
+        }
+    }
+
+    const listarHorariosDisponiveis = () => {
+
+
+        // Adiciona a lista listaHoraDisponivel todos os horários disponíveis
+        initListaHorariosDisponiveis()
+
+        // Validação na lista de horários disponíveis
+        for (let i = horaMinFunc; i < horaMaxFunc; i += .5) {
+            // calcHoraServico -> relaciona i com a duração do serviço que i representa
+            // calcDuracaoServico -> converte as horas para floats
+            calcDuracaoServico(calcHoraServico(i))
+
+            // Validação por horários já agendados
+            valHorariosBloqueados(i)
+
+        }
+        valTempoNecessarioDisponivel()
+
+        // Retorna uma lista das horas disponíveis
+        return listaHoraDisponivel.map(hora => {
+            let horaCompleta = hora[0] + ':00'
+            horaCompleta = horaCompleta.toString().replace('.5:00', ':30')
+            if (horaCompleta.length == 4)
+                horaCompleta = '0' + horaCompleta
+            // console.log('hora[1]: ' + hora[1])
+
+            if (hora[1] == null)
+                return <button className="FormAgendamento-li-horaDisp" type="button" onClick={handleChangeHora} value={horaCompleta}>{horaCompleta}</button>
+
+        })
+    }
+
     // ##### HANDLES DO FORMULÁRIO #####
     const handleChangeBarbeiro = event => {
         idBarbeiroSelecionado = event.target.value
         setInfoCliente({ ...infoCliente, idBarbeiro: idBarbeiroSelecionado })
+        // horaMaxFunc = id
+        // console.log(idBarbeiroSelecionado)
+
     }
 
     const handleChangeData = event => {
@@ -201,70 +356,25 @@ export default function FormAgendamento(props) {
 
     }
 
-    useEffect(() => {
-        if (
+    useEffect(() =>{
+        if( 
             infoCliente.emailCliente == '' ||
             infoCliente.horaAgendamentoPost == '' ||
             infoCliente.idBarbeiro == '' ||
             infoCliente.nomeCliente == '' ||
             infoCliente.telefoneCliente == ''
-        ) {
+        ){
             setButtonBloqueado(true)
         } else {
             setButtonBloqueado(false)
         }
     })
 
-    const popularHorariosExpediente = () => {
-        let listaHora = []
-        for (let i = horaMinFunc; i < horaMaxFunc; i += 0.5)
-            listaHora.push(i)
-
-        return listaHora
-    }
-
-    const formataLayoutHora1 = (hora) => {
-        hora += ':00'
-        return hora.toString().replace('.5:00', ':30')
-    }
-
-    const formataLayoutHora2 = (hora) => {
-
-        return hora.toString().replace(':00', '').replace(':30', '.5')
-    }
-
-    const regrasNegocioHorariosDisponivei = () => {
-        let listaHorariosDisponiveis = []
-        let horarioFormatado
-
-        // Popula a lista de horas com base no começo e fim do expediente
-        listaHorariosDisponiveis = popularHorariosExpediente()
-
-        // Regra 1: Não é permitido horários já agendados
-        resAgendamentoDia.map(agendamento => {
-            listaHorariosDisponiveis = HorariosJaAgendados(listaHorariosDisponiveis, formataLayoutHora2(agendamento.horario.slice(11, 16)))
-        })
-
-
-
-        return listaHorariosDisponiveis.map(horario => {
-            horarioFormatado = formataLayoutHora1(horario)
-
-            return <button
-                type="button"
-                className="FormAgendamento-li-horaDisp"
-                onClick={handleChangeHora}
-                value={horarioFormatado}
-            >{horarioFormatado}</button>
-        })
-
-    }
-
     // ##### HANDLES DE SUBMIT #####
     const handleSubmitPostAgemdamento = async event => {
         event.preventDefault()
         console.log(infoCliente)
-
+        
         const agendamento = {
             name: infoCliente.nomeCliente,
             email: infoCliente.emailCliente,
@@ -275,18 +385,21 @@ export default function FormAgendamento(props) {
             barbeariasId: 1
         }
 
+        if (valFormPostAgendamento(agendamento)) {
+            // console.log(agendamento)
 
-
-        await axios.post(`https://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
-            .then(res => {
-                // console.log(res);
-                // console.log(res.data);
-                navigate('/confirmacao-agendamento')
-            })
-            .catch(() => {
-                console.log('Deu ruim')
-            })
-
+            await axios.post(`https://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
+                .then(res => {
+                    // console.log(res);
+                    // console.log(res.data);
+                    navigate('/confirmacao-agendamento')
+                })
+                .catch(() => {
+                    console.log('Deu ruim')
+                })
+        } else {
+            // console.log('Impossível realizar um agendamento!')
+        }
 
     }
 
@@ -327,6 +440,13 @@ export default function FormAgendamento(props) {
     const valFormPostAgendamento = (agendamento) => {
         let FormPostValidado = true
 
+        // if (!infoCliente.idBarbeiro == '') {
+        //     setValIdBarbeiro(false)
+        // } else {
+        //     setValIdBarbeiro(true)
+        //     FormPostValidado = false
+        // }
+
         if (valNomeCompleto(agendamento.name)) {
             setValName(false)
         } else {
@@ -340,6 +460,13 @@ export default function FormAgendamento(props) {
             setValEmail(true)
             FormPostValidado = false
         }
+
+        // if (validatorTel(agendamento.contato)) {
+        //     setValContato(false)
+        // } else {
+        //     setValContato(true)
+        //     FormPostValidado = false
+        // }
 
         return FormPostValidado
     }
@@ -419,8 +546,7 @@ export default function FormAgendamento(props) {
 
                 <div className="FormAgendamento-bt-horarios-disponiveis">
                     {
-                        valDataAgendamento ? regrasNegocioHorariosDisponivei()
-                            : ''
+                        horariosDisponiveis && valDataAgendamento ? listarHorariosDisponiveis() : ''
                     }
                 </div>
 

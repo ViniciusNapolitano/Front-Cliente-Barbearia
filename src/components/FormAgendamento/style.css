@@ -130,6 +130,7 @@ li {
 }
 
 .FormAgendamento-li-horaDisp {
+    width: 70px;
     padding: 8px;
     margin: 8px;
     font-size: 1rem;
