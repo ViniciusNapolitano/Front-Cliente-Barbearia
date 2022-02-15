@@ -14,7 +14,7 @@ import { EstadoContext } from "../Providers/estado";
 
 import validator from 'validator'
 import validatorTel from "validar-telefone";
-import { HorariosJaAgendados } from "../../services/HorariosDisponiveis.service";
+import { HorarioNaoPermitido, HorariosJaAgendados } from "../../services/HorariosDisponiveis.service";
 
 export default function FormAgendamento(props) {
 
@@ -236,15 +236,22 @@ export default function FormAgendamento(props) {
     const regrasNegocioHorariosDisponivei = () => {
         let listaHorariosDisponiveis = []
         let horarioFormatado
+        let dataEhoraSelecionada = data + 'T' + infoCliente.horaAgendamentoPost + ':00'
 
         // Popula a lista de horas com base no começo e fim do expediente
         listaHorariosDisponiveis = popularHorariosExpediente()
 
         // Regra 1: Não é permitido horários já agendados
         resAgendamentoDia.map(agendamento => {
-            listaHorariosDisponiveis = HorariosJaAgendados(listaHorariosDisponiveis, formataLayoutHora2(agendamento.horario.slice(11, 16)))
+            listaHorariosDisponiveis = HorariosJaAgendados(
+                listaHorariosDisponiveis,
+                formataLayoutHora2(agendamento.horario.slice(11, 16)),
+                formataLayoutHora2(agendamento.servicos.tempoServico.slice(11, 16))
+            )
         })
 
+        // Regra 3: Não é permitido horários sem agendamento e que já passaram da hora atual
+        listaHorariosDisponiveis = HorarioNaoPermitido(listaHorariosDisponiveis, data, infoCliente.horaAgendamentoPost)
 
 
         return listaHorariosDisponiveis.map(horario => {
