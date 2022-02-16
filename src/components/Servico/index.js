@@ -9,15 +9,19 @@ import ItemServico from '../../components/ItemServico'
 export default function Servico(props) {
 
     function listarServocos() {
+        let count = 0
+        
         return props.servicos.map(servico => {
-            return <ItemServico
-                nomeServico={servico.nomeServico}
-                precoServico={servico.precoServico}
-                url={servico.servicoImagem.url}
-                idServico={servico.idServico}
-                tempoServico={servico.tempoServico}
-            />
-
+            if (count < 6) {
+                count++
+                return <ItemServico
+                    nomeServico={servico.nomeServico}
+                    precoServico={servico.precoServico}
+                    url={servico.servicoImagem.url}
+                    idServico={servico.idServico}
+                    tempoServico={servico.tempoServico}
+                />
+            }
         })
     }
 
