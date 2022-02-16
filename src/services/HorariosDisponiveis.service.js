@@ -1,11 +1,19 @@
 import { format } from 'date-fns'
 
-const formataLayoutHora1 = (hora) => {
-    hora += ':00'
-    return hora.toString().replace('.5:00', ':30')
+const formataLayoutHora2 = (hora) => {
+    return hora.toString().replace(':00', '').replace(':30', '.5')
 }
 
-// Regra 1: Não é permitido horários já agendados
+// Regra 1: Não é permitido horários fora do expediente
+export function popularHorariosExpediente (horaMinFunc, horaMaxFunc) {
+    let listaHora = []
+    for (let i = horaMinFunc; i < horaMaxFunc; i += 0.5)
+        listaHora.push(i)
+
+    return listaHora
+}
+
+// Regra 2: Não é permitido horários já agendados
 export function HorariosJaAgendados(listaHorarios, horario, duracao) {
     listaHorarios.map(horaDisponivel => {
 
@@ -18,10 +26,8 @@ export function HorariosJaAgendados(listaHorarios, horario, duracao) {
     return listaHorarios
 }
 
-// Regra 2: Não é permitido horários fora do expediente
-
 // Regra 3: Não é permitido horários sem agendamento e que já passaram da hora atual
-export function HorarioNaoPermitido(listaHorarios, dataSelecionada, horaSelecionada) {
+export function HorarioNaoPermitido(listaHorarios, dataSelecionada) {
     let dataAtual = new Date()
     let dataAtualFormatada = format(dataAtual, 'yyyy-MM-dd')
     let listaHorariosExcluir = []
@@ -53,3 +59,15 @@ export function HorarioNaoPermitido(listaHorarios, dataSelecionada, horaSelecion
 }
 
 // Regra 4: Não é permitido horáruios que não cabem a duração do serviço
+export function valDuracaoServico(listaHorarios, duracaoServico) {
+    let duracaoServicoFormatado = parseFloat(formataLayoutHora2(duracaoServico))
+
+    // Valida se cada hora da lista possui (Hora + Duração do Serviço) como um valor verdadeiro indicando que há espaço
+    for (let i = 0; i < listaHorarios.length; i++) {
+        if (!(listaHorarios[i] + (duracaoServicoFormatado - .5) == listaHorarios[i + ((duracaoServicoFormatado / .5) - 1)])) {
+            listaHorarios.splice(i, (duracaoServicoFormatado / .5) - 1)
+        }
+    }
+
+    return listaHorarios
+}

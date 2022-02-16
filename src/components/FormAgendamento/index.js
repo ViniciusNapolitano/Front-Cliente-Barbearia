@@ -14,7 +14,7 @@ import { EstadoContext } from "../Providers/estado";
 
 import validator from 'validator'
 import validatorTel from "validar-telefone";
-import { HorarioNaoPermitido, HorariosJaAgendados } from "../../services/HorariosDisponiveis.service";
+import { HorarioNaoPermitido, HorariosJaAgendados, popularHorariosExpediente, valDuracaoServico } from "../../services/HorariosDisponiveis.service";
 
 export default function FormAgendamento(props) {
 
@@ -215,33 +215,23 @@ export default function FormAgendamento(props) {
         }
     })
 
-    const popularHorariosExpediente = () => {
-        let listaHora = []
-        for (let i = horaMinFunc; i < horaMaxFunc; i += 0.5)
-            listaHora.push(i)
-
-        return listaHora
-    }
-
     const formataLayoutHora1 = (hora) => {
         hora += ':00'
         return hora.toString().replace('.5:00', ':30')
     }
 
     const formataLayoutHora2 = (hora) => {
-
         return hora.toString().replace(':00', '').replace(':30', '.5')
     }
 
     const regrasNegocioHorariosDisponivei = () => {
         let listaHorariosDisponiveis = []
         let horarioFormatado
-        let dataEhoraSelecionada = data + 'T' + infoCliente.horaAgendamentoPost + ':00'
 
-        // Popula a lista de horas com base no começo e fim do expediente
-        listaHorariosDisponiveis = popularHorariosExpediente()
+        // Regra 1: Não é permitido horários fora do expediente
+        listaHorariosDisponiveis = popularHorariosExpediente(horaMinFunc, horaMaxFunc)
 
-        // Regra 1: Não é permitido horários já agendados
+        // Regra 2: Não é permitido horários já agendados
         resAgendamentoDia.map(agendamento => {
             listaHorariosDisponiveis = HorariosJaAgendados(
                 listaHorariosDisponiveis,
@@ -251,8 +241,10 @@ export default function FormAgendamento(props) {
         })
 
         // Regra 3: Não é permitido horários sem agendamento e que já passaram da hora atual
-        listaHorariosDisponiveis = HorarioNaoPermitido(listaHorariosDisponiveis, data, infoCliente.horaAgendamentoPost)
+        listaHorariosDisponiveis = HorarioNaoPermitido(listaHorariosDisponiveis, data)
 
+        // Regra 4: Não é permitido horáruios que não cabem a duração do serviço
+        listaHorariosDisponiveis = valDuracaoServico(listaHorariosDisponiveis, tempoServico.slice(11, 16))
 
         return listaHorariosDisponiveis.map(horario => {
             horarioFormatado = formataLayoutHora1(horario)
@@ -270,19 +262,20 @@ export default function FormAgendamento(props) {
     // ##### HANDLES DE SUBMIT #####
     const handleSubmitPostAgemdamento = async event => {
         event.preventDefault()
-        console.log(infoCliente)
+        let horaAgendamento = infoCliente.horaAgendamentoPost
+
+        if (infoCliente.horaAgendamentoPost.length == 4)
+            horaAgendamento = '0' + infoCliente.horaAgendamentoPost.toString()
 
         const agendamento = {
             name: infoCliente.nomeCliente,
             email: infoCliente.emailCliente,
             contato: infoCliente.telefoneCliente,
-            horario: data + 'T' + infoCliente.horaAgendamentoPost + ':00',
+            horario: data + 'T' + horaAgendamento + ':00',
             servicosId: idServico,
             barbeirosId: infoCliente.idBarbeiro,
             barbeariasId: 1
         }
-
-
 
         await axios.post(`https://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
             .then(res => {
@@ -293,8 +286,6 @@ export default function FormAgendamento(props) {
             .catch(() => {
                 console.log('Deu ruim')
             })
-
-
     }
 
     const valNomeCompleto = (nome) => {
