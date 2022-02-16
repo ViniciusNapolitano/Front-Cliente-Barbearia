@@ -33,7 +33,7 @@ export function HorarioNaoPermitido(listaHorarios, dataSelecionada) {
     let listaHorariosExcluir = []
     let listaHorariosTratados = []
 
-    if (dataAtual.getHours() == 0) {
+    if (dataAtualFormatada == dataSelecionada && dataAtual.getHours() == 0) {
         return []
 
     } else {
