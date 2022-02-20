@@ -13,7 +13,6 @@ import { getToken } from '../../services/Autenticacao.service.ts'
 import { useNavigate } from 'react-router-dom';
 
 import { EstadoContext } from "../../components/Providers/estado";
-import { render } from '@testing-library/react'
 
 export default function AgendaBarbeiro() {
 
@@ -23,6 +22,8 @@ export default function AgendaBarbeiro() {
     const [listaAgendamentos, setListaAgendamentos] = useState([])
 
     const { maisDetalhes, setMaisDetalhes, agendamento } = React.useContext(EstadoContext)
+
+    const [confirmCancelamento, setConfirmCancelamento] = useState(false)
 
     let nomeBarbeiro = ''
 
@@ -55,6 +56,10 @@ export default function AgendaBarbeiro() {
             .catch(() => {
                 console.log('Deu ruim')
             })
+    }
+
+    const submitCancelarAgendamento = async () => {
+        await ''
     }
 
     const listarBarbeiros = () => {
@@ -110,16 +115,37 @@ export default function AgendaBarbeiro() {
                                 <div className='AgendaBarbeiro-wrap-modal-content'>
                                     <p><span className='AgendaBarbeiro-span-bold'>Barbeiro: </span>{agendamento.barbeiros.nameBarbeiro}</p>
                                     <p><span className='AgendaBarbeiro-span-bold'>Cliente: </span>{agendamento.name}</p>
-                                    <p><span className='AgendaBarbeiro-span-bold'>Contato: </span>{agendamento.contato}</p>
-                                    <p><span className='AgendaBarbeiro-span-bold'>E-mail: </span>{agendamento.email}</p>
+                                    <p><span className='AgendaBarbeiro-span-bold'>Contato: </span><a className='AgendaBarbeiro-a' href={"tel:" + agendamento.contato}>{agendamento.contato}</a></p>
+                                    <p><span className='AgendaBarbeiro-span-bold'>E-mail: </span><a className='AgendaBarbeiro-a' href={"mailto:" + agendamento.email + "?subject=Dúvidas Atemdimento"} target="_blank">{agendamento.email}</a></p>
                                     <p><span className='AgendaBarbeiro-span-bold'>Horário: </span>{agendamento.horario.slice(11, 16).toString()}h</p>
                                     <p><span className='AgendaBarbeiro-span-bold'>Serviço: </span>{agendamento.servicos.nomeServico}</p>
                                     <p><span className='AgendaBarbeiro-span-bold'>Duração Serviço: </span>{agendamento.servicos.tempoServico.slice(11, 16).toString()}h</p>
                                     <p><span className='AgendaBarbeiro-span-bold'>Preço: </span>{agendamento.servicos.precoServico} R$</p>
                                 </div>
+                                <button className='AgendaBarbeiro-btn-cancelar-agendamento' onClick={
+                                    () => {
+                                        setConfirmCancelamento(true)
+                                        setMaisDetalhes(false)
+                                    }
+                                }>Cancelar <br /> Agendamento</button>
                             </div>
                         </div>
                         : ''
+                }
+
+                {
+                    confirmCancelamento ?
+                        <div className='AgendaBarbeiro-pelicula-maisdetalhes'>
+                            <div className='AgendaBarbeiro-modal'>
+                                <h1 className='AgendaBarbeiro-h1'>Cancelar agendamento</h1>
+                                <p className='AgendaBarbeiro-cancelar-content'>Tem certeza que deseja <br/> cancelar este agendamento ?</p>
+                                <div className='AgendaBarbeiro-wrap-btn-cancelar'>
+                                    <button className='AgendaBarbeiro-btn-cancelar' onClick={submitCancelarAgendamento()}>Sim</button>
+                                    <button className='AgendaBarbeiro-btn-cancelar' id='btn-cancelar' onClick={() => {setConfirmCancelamento(false)}}>Não</button>
+                                </div>
+                            </div>
+                        </div>
+                        :  '' 
                 }
                 <Cabecalho />
                 <section className='AgendaBarbeiro-section'>

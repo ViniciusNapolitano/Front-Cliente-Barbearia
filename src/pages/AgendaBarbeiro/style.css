@@ -100,6 +100,54 @@
     font-weight: 600;
 }
 
+.AgendaBarbeiro-btn-cancelar-agendamento {
+    background-color: #B78865;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    padding: 8px 16px;
+    text-transform: uppercase;
+    margin-top: 32px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.AgendaBarbeiro-cancelar-content {
+    margin: 32px 0;
+    font-size: 1.2rem;
+    color: #515151;
+    text-align: center;
+}
+
+.AgendaBarbeiro-btn-cancelar {
+    width: 80px;
+    padding: 8px 16px;
+    font-size: 1rem;
+    border: 2px solid #B78865;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+    margin: 0 16px;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-family: 'Quicksand', sans-serif;
+    cursor: pointer;
+    color: #B78865;
+}
+
+#btn-cancelar {
+    background-color: rgb(230, 66, 66);
+    border: none;
+    color: #fff;
+}
+
+.AgendaBarbeiro-a {
+    color: #515151;
+}
+
 @media (max-width: 768px) {
     .AgendaBarbeiro-section {
         width: 100%;
