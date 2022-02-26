@@ -6,11 +6,12 @@ import { EstadoContext } from "../Providers/estado";
 
 export default function CardAgendamento(props) {
 
-    const { maisDetalhes, setMaisDetalhes, agendamento, setAgendamento } = React.useContext(EstadoContext)
+    const { maisDetalhes, setMaisDetalhes, agendamento, setAgendamento, setIdAgendamento } = React.useContext(EstadoContext)
 
     const modalDetalhes = () => {
         setMaisDetalhes(!maisDetalhes)
         setAgendamento(props.agendamento)
+        setIdAgendamento(props.agendamento.idAgendamento)
     }
 
     return (

@@ -21,7 +21,7 @@ export default function AgendaBarbeiro() {
     const [barbearia, setBarbearia] = useState('')
     const [listaAgendamentos, setListaAgendamentos] = useState([])
 
-    const { maisDetalhes, setMaisDetalhes, agendamento } = React.useContext(EstadoContext)
+    const { maisDetalhes, setMaisDetalhes, agendamento, idAgendamento } = React.useContext(EstadoContext)
 
     const [confirmCancelamento, setConfirmCancelamento] = useState(false)
 
@@ -59,7 +59,20 @@ export default function AgendaBarbeiro() {
     }
 
     const submitCancelarAgendamento = async () => {
-        await ''
+        await axios.delete('https://mybarberapi.herokuapp.com/api/v1/agendamentos/' + idAgendamento)
+        .then(res => {
+            console.log('Agendamento cancelado!')
+            console.log(res)
+            console.log(res.data)
+        })
+        .catch(res => {
+            console.log('Deu ruim no cancelamento do agendamento.')
+            console.log(res)
+            console.log(res.data)
+        })
+
+        setConfirmCancelamento(false)
+        window.location.reload();
     }
 
     const listarBarbeiros = () => {
@@ -140,7 +153,7 @@ export default function AgendaBarbeiro() {
                                 <h1 className='AgendaBarbeiro-h1'>Cancelar agendamento</h1>
                                 <p className='AgendaBarbeiro-cancelar-content'>Tem certeza que deseja <br/> cancelar este agendamento ?</p>
                                 <div className='AgendaBarbeiro-wrap-btn-cancelar'>
-                                    <button className='AgendaBarbeiro-btn-cancelar' onClick={submitCancelarAgendamento()}>Sim</button>
+                                    <button className='AgendaBarbeiro-btn-cancelar' onClick={submitCancelarAgendamento}>Sim</button>
                                     <button className='AgendaBarbeiro-btn-cancelar' id='btn-cancelar' onClick={() => {setConfirmCancelamento(false)}}>Não</button>
                                 </div>
                             </div>

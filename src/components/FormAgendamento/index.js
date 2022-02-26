@@ -40,6 +40,8 @@ export default function FormAgendamento(props) {
     var dataMaxAgendamento = new Date()
     dataMaxAgendamento.setMonth((dataMinAgendamento.getMonth() + 1))
 
+    const [precoServico, setPrecoServico] = useState(0)
+
     const [fotoBarbeiro, setFotoBarbeiro] = useState(false)
     const [horariosDisponiveis, setHorariosDisponiveis] = useState(false)
 
@@ -60,17 +62,19 @@ export default function FormAgendamento(props) {
     let tempoAgendamento
     let ListaTempoAgendamento = []
     let tamDuracaoServico = 0
-    let horaServico = parseFloat(tempoServico.slice(11, 16).toString().replace(':', '.'))
+    // let horaServico = parseFloat(tempoServico.slice(11, 16).toString().replace(':', '.'))
     let listaHoraDisponivel = []
-    let idBarbeiroSelecionado
+    let idBarbeiroSelecionado = 0
 
     useEffect(() => {
-        props.servicos.map(servico => servico.servicosBarbeiros.map(barbeiro => {
-            if (barbeiro.barbeiros.idBarbeiro == infoCliente.idBarbeiro)
-                setFotoBarbeiro(barbeiro.barbeiros.barbeiroImagem.url)
-            else if (0 == infoCliente.idBarbeiro)
-                setFotoBarbeiro(false)
-        }))
+        if (typeof infoCliente.idBarbeiro == 'string') {
+            props.servicos.map(servico => servico.servicosBarbeiros.map(barbeiro => {
+                if (barbeiro.barbeiros.idBarbeiro == infoCliente.idBarbeiro)
+                    setFotoBarbeiro(barbeiro.barbeiros.barbeiroImagem.url)
+                else if (0 == infoCliente.idBarbeiro)
+                    setFotoBarbeiro(false)
+            }))
+        }
     }, [infoCliente.idBarbeiro])
 
     async function filtrarAgendamentoData(agendamentoDia) {
@@ -82,6 +86,14 @@ export default function FormAgendamento(props) {
 
                 // console.log(res.data)
             })
+    }
+
+    const listarServicos = () => {
+        // console.log(nomeServico)
+        return props.servicos.map(servico => {
+            // console.log(servico.tempoServico)
+            return <option onClick={() => handleChangeTempoServico(servico.tempoServico, servico.precoServico)} key={servico.nomeServico} value={servico.idServico}>{servico.nomeServico}</option>
+        })
     }
 
     const listarBarbeiros = () => {
@@ -119,9 +131,22 @@ export default function FormAgendamento(props) {
     }
 
     // ##### HANDLES DO FORMULÁRIO #####
+    const handleChangeServico = event => {
+        window.localStorage.setItem('idServico', event.target.value)
+        idServico = event.target.value
+        setInfoCliente({ ...infoCliente, idBarbeiro: true })
+        setFotoBarbeiro(false)
+    }
+
+    const handleChangeTempoServico = (tempoServico, precoServico) => {
+        window.localStorage.setItem('tempoServico', tempoServico)
+        setPrecoServico(precoServico)
+    }
+
     const handleChangeBarbeiro = event => {
         idBarbeiroSelecionado = event.target.value
         setInfoCliente({ ...infoCliente, idBarbeiro: idBarbeiroSelecionado })
+
     }
 
     const handleChangeData = event => {
@@ -288,71 +313,84 @@ export default function FormAgendamento(props) {
             })
     }
 
-    const valNomeCompleto = (nome) => {
-        let valCorreta
-        if (nome.length < 3 || nome.length > 40) {
-            valCorreta = false
-        } else {
-            valCorreta = true
-            for (let i = 0; i < nome.length; i++) {
-                if (nome[i] == '!' ||
-                    nome[i] == '@' ||
-                    nome[i] == '#' ||
-                    nome[i] == '$' ||
-                    nome[i] == '%' ||
-                    nome[i] == '&' ||
-                    nome[i] == '*' ||
-                    nome[i] == '(' ||
-                    nome[i] == ')' ||
-                    nome[i] == '-' ||
-                    nome[i] == '+' ||
-                    nome[i] == '=' ||
-                    nome[i] == '?' ||
-                    nome[i] == '|' ||
-                    nome[i] == ',' ||
-                    nome[i] == ';' ||
-                    nome[i] == '/' ||
-                    nome[i] == '|' ||
-                    nome[i] == '.') {
-                    valCorreta = false
-                }
-            }
-        }
+    // const valNomeCompleto = (nome) => {
+    //     let valCorreta
+    //     if (nome.length < 3 || nome.length > 40) {
+    //         valCorreta = false
+    //     } else {
+    //         valCorreta = true
+    //         for (let i = 0; i < nome.length; i++) {
+    //             if (nome[i] == '!' ||
+    //                 nome[i] == '@' ||
+    //                 nome[i] == '#' ||
+    //                 nome[i] == '$' ||
+    //                 nome[i] == '%' ||
+    //                 nome[i] == '&' ||
+    //                 nome[i] == '*' ||
+    //                 nome[i] == '(' ||
+    //                 nome[i] == ')' ||
+    //                 nome[i] == '-' ||
+    //                 nome[i] == '+' ||
+    //                 nome[i] == '=' ||
+    //                 nome[i] == '?' ||
+    //                 nome[i] == '|' ||
+    //                 nome[i] == ',' ||
+    //                 nome[i] == ';' ||
+    //                 nome[i] == '/' ||
+    //                 nome[i] == '|' ||
+    //                 nome[i] == '.') {
+    //                 valCorreta = false
+    //             }
+    //         }
+    //     }
 
-        return valCorreta
-    }
+    //     return valCorreta
+    // }
 
-    const valFormPostAgendamento = (agendamento) => {
-        let FormPostValidado = true
+    // const valFormPostAgendamento = (agendamento) => {
+    //     let FormPostValidado = true
 
-        if (valNomeCompleto(agendamento.name)) {
-            setValName(false)
-        } else {
-            setValName(true)
-            FormPostValidado = false
-        }
+    //     if (valNomeCompleto(agendamento.name)) {
+    //         setValName(false)
+    //     } else {
+    //         setValName(true)
+    //         FormPostValidado = false
+    //     }
 
-        if (validator.isEmail(agendamento.email)) {
-            setValEmail(false)
-        } else {
-            setValEmail(true)
-            FormPostValidado = false
-        }
+    //     if (validator.isEmail(agendamento.email)) {
+    //         setValEmail(false)
+    //     } else {
+    //         setValEmail(true)
+    //         FormPostValidado = false
+    //     }
 
-        return FormPostValidado
-    }
+    //     return FormPostValidado
+    // }
 
     return (
         <section className="FormAgendamento-section">
             <h1>Preencha as informações para agendar</h1>
             <form className="FormAgendamento-form" onSubmit={handleSubmitPostAgemdamento}>
                 <label className="FormAgendamento-espacamento">Serviço:</label>
-                <input disabled type="text" placeholder={nomeServico}></input>
+                {/* <input disabled type="text" placeholder={nomeServico}></input> */}
+                <select name="select" onChange={handleChangeServico} className="FormAgendamento-select">
+                    <option key="0" value="0">Selecionar</option>
+                    {listarServicos()}
+                </select>
+
+                <label className="FormAgendamento-espacamento">Preço do Serviço:</label>
+                <input disabled id='FormAgendamento-input-preco' type="text" value={parseFloat(precoServico).toFixed(2) + ' R$'}></input>
+
 
                 <label className="FormAgendamento-espacamento">Cabelereiro(a):</label>
                 <select name="select" onChange={handleChangeBarbeiro} className="FormAgendamento-select">
                     <option key="0" value="0">Selecionar</option>
-                    {listarBarbeiros()}
+                    {
+
+                        infoCliente.idBarbeiro ?
+                            listarBarbeiros()
+                            : ''
+                    }
                 </select>
                 {infoCliente.idBarbeiro == '' ?
                     <p className="error-message">Selecione um barbeiro.</p>

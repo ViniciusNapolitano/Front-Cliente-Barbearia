@@ -12,7 +12,7 @@ export default function Apresentacao(props) {
                     {/* <h1>{props.titulo}</h1> */}
                 </div>
                 <div className="Apresentacao-container-agendamento">
-                    <Link to="/agendamento" className="Apresentacao-btn-agendamento"><p>Agendar</p></Link>
+                    <Link to="/agendamento/informacoes" className="Apresentacao-btn-agendamento"><p>Agendar</p></Link>
                 </div>
             </div>
         </section>

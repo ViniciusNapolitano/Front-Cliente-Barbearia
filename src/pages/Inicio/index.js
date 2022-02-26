@@ -10,7 +10,7 @@ import axios from 'axios';
 export default class Inicio extends React.Component {
     constructor() {
         super()
-
+        window.localStorage.clear()
         this.infos = 0
     }
 

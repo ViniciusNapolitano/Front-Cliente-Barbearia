@@ -163,6 +163,11 @@ li {
     /* background-color: red; */
 }
 
+#FormAgendamento-input-preco {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 500;
+}
+
 @media (max-width: 768px) {
     .FormAgendamento-section {
         padding: 82px 0 64px 0;

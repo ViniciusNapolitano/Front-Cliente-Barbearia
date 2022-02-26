@@ -17,6 +17,8 @@ export const EstadoProvider = (props) => {
 
     const [agendamento, setAgendamento] = useState('')
 
+    const [idAgendamento, setIdAgendamento] = useState('')
+
 
     return (
         <EstadoContext.Provider value={{
@@ -24,7 +26,8 @@ export const EstadoProvider = (props) => {
             nomeServico, setNomeServico,
             tempoServico, setTempoServico,
             maisDetalhes, setMaisDetalhes,
-            agendamento, setAgendamento
+            agendamento, setAgendamento,
+            idAgendamento, setIdAgendamento
             }}>
             {props.children}
         </EstadoContext.Provider>

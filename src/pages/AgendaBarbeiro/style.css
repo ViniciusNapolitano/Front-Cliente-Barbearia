@@ -96,6 +96,10 @@
     font-size: 1.2rem;
 }
 
+.AgendaBarbeiro-wrap-modal-content p {
+    margin-top: 8px;
+}
+
 .AgendaBarbeiro-span-bold {
     font-weight: 600;
 }
@@ -146,6 +150,7 @@
 
 .AgendaBarbeiro-a {
     color: #515151;
+    text-decoration: underline;
 }
 
 @media (max-width: 768px) {
