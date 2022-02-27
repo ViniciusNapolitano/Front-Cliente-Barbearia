@@ -379,7 +379,7 @@ export default function FormAgendamento(props) {
                 </select>
 
                 <label className="FormAgendamento-espacamento">Preço do Serviço:</label>
-                <input disabled id='FormAgendamento-input-preco' type="text" value={parseFloat(precoServico).toFixed(2) + ' R$'}></input>
+                <input disabled id='FormAgendamento-input-preco' type="text" placeholder={parseFloat(precoServico).toFixed(2) + ' R$'}></input>
 
 
                 <label className="FormAgendamento-espacamento">Cabelereiro(a):</label>

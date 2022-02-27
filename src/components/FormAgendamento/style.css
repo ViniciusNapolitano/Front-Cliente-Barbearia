@@ -166,6 +166,7 @@ li {
 #FormAgendamento-input-preco {
     font-family: 'Quicksand', sans-serif;
     font-weight: 500;
+    color: #515151;
 }
 
 @media (max-width: 768px) {
