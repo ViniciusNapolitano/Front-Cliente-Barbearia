@@ -18,6 +18,8 @@ export default function ItemServico(props) {
         window.localStorage.setItem('nomeServico', props.nomeServico)
         setTempoServico(props.tempoServico)
         window.localStorage.setItem('tempoServico', props.tempoServico)
+        
+        window.localStorage.setItem('precoServico', props.precoServico)
 
     }
 

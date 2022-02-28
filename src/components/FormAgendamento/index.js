@@ -40,7 +40,7 @@ export default function FormAgendamento(props) {
     var dataMaxAgendamento = new Date()
     dataMaxAgendamento.setMonth((dataMinAgendamento.getMonth() + 1))
 
-    const [precoServico, setPrecoServico] = useState(0)
+    const [precoServico, setPrecoServico] = useState(window.localStorage.getItem('precoServico'))
 
     const [fotoBarbeiro, setFotoBarbeiro] = useState(false)
     const [horariosDisponiveis, setHorariosDisponiveis] = useState(false)
@@ -92,7 +92,11 @@ export default function FormAgendamento(props) {
         // console.log(nomeServico)
         return props.servicos.map(servico => {
             // console.log(servico.tempoServico)
-            return <option onClick={() => handleChangeTempoServico(servico.tempoServico, servico.precoServico)} key={servico.nomeServico} value={servico.idServico}>{servico.nomeServico}</option>
+            if (servico.idServico == window.localStorage.getItem('idServico'))
+                return <option selected onClick={() => handleChangeTempoServico(servico.tempoServico, servico.precoServico)} key={servico.nomeServico} value={servico.idServico}>{servico.nomeServico}</option>
+            else
+                return <option onClick={() => handleChangeTempoServico(servico.tempoServico, servico.precoServico)} key={servico.nomeServico} value={servico.idServico}>{servico.nomeServico}</option>
+
         })
     }
 
