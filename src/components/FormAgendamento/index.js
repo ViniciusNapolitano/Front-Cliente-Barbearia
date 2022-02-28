@@ -391,9 +391,9 @@ export default function FormAgendamento(props) {
                     <option key="0" value="0">Selecionar</option>
                     {
 
-                        infoCliente.idBarbeiro ?
-                            listarBarbeiros()
-                            : ''
+                        listarBarbeiros()
+                        // infoCliente.idBarbeiro ?
+                        //     : ''
                     }
                 </select>
                 {infoCliente.idBarbeiro == '' ?
