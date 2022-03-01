@@ -94,6 +94,7 @@ export default function FormAgendamento(props) {
             // console.log(servico.tempoServico)
             if (servico.idServico == window.localStorage.getItem('idServico'))
                 return <option selected onClick={() => handleChangeTempoServico(servico.tempoServico, servico.precoServico)} key={servico.nomeServico} value={servico.idServico}>{servico.nomeServico}</option>
+
             else
                 return <option onClick={() => handleChangeTempoServico(servico.tempoServico, servico.precoServico)} key={servico.nomeServico} value={servico.idServico}>{servico.nomeServico}</option>
 
@@ -140,11 +141,16 @@ export default function FormAgendamento(props) {
         idServico = event.target.value
         setInfoCliente({ ...infoCliente, idBarbeiro: true })
         setFotoBarbeiro(false)
+
+        props.servicos.map(servico => {
+            if (servico.idServico == window.localStorage.getItem('idServico'))
+                setPrecoServico(servico.precoServico)
+        })
     }
 
     const handleChangeTempoServico = (tempoServico, precoServico) => {
         window.localStorage.setItem('tempoServico', tempoServico)
-        setPrecoServico(precoServico)
+        // setPrecoServico(precoServico)
     }
 
     const handleChangeBarbeiro = event => {
@@ -301,12 +307,12 @@ export default function FormAgendamento(props) {
             email: infoCliente.emailCliente,
             contato: infoCliente.telefoneCliente,
             horario: data + 'T' + horaAgendamento + ':00',
-            servicosId: idServico,
-            barbeirosId: infoCliente.idBarbeiro,
+            servicosId: parseInt(idServico),
+            barbeirosId: parseInt(infoCliente.idBarbeiro),
             barbeariasId: 1
         }
-
-        await axios.post(`https://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
+        console.log(agendamento)
+        await axios.post(`http://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
             .then(res => {
                 // console.log(res);
                 // console.log(res.data);

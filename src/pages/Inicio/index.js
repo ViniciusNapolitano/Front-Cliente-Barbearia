@@ -19,7 +19,7 @@ export default class Inicio extends React.Component {
     }
 
     async componentDidMount() {
-        await axios.get(`https://mybarberapi.herokuapp.com/api/v1/barbearias/1/`)
+        await axios.get(`http://apibarber.vps-kinghost.net:443/api/v1/barbearias/1/`)
             .then(res => {
                 const resGet = res.data;
                 this.infos = res.data;
