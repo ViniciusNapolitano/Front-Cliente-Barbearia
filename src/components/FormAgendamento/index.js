@@ -177,45 +177,50 @@ export default function FormAgendamento(props) {
 
         dayNameSelecionado = dayName[event.getDay()]
         // console.log(event)
-        props.barbeiros.map(barbeiro => {
-            // console.log(barbeiro)
+        try {
+            props.barbeiros.map(barbeiro => {
+                // console.log(barbeiro)
 
-            if (barbeiro.idBarbeiro == infoCliente.idBarbeiro) {
+                if (barbeiro.idBarbeiro == infoCliente.idBarbeiro) {
 
-                const diasDaSemana = {
-                    domingo: () => {
-                        setHoraMinFunc(barbeiro.agendas.domingo[0])
-                        setHoraMaxFunc(barbeiro.agendas.domingo[1])
-                    },
-                    segunda: () => {
-                        setHoraMinFunc(barbeiro.agendas.segunda[0])
-                        setHoraMaxFunc(barbeiro.agendas.segunda[1])
-                    },
-                    terca: () => {
-                        setHoraMinFunc(barbeiro.agendas.terca[0])
-                        setHoraMaxFunc(barbeiro.agendas.terca[1])
-                    },
-                    quarta: () => {
-                        setHoraMinFunc(barbeiro.agendas.quarta[0])
-                        setHoraMaxFunc(barbeiro.agendas.quarta[1])
-                    },
-                    quinta: () => {
-                        setHoraMinFunc(barbeiro.agendas.quinta[0])
-                        setHoraMaxFunc(barbeiro.agendas.quinta[1])
-                    },
-                    sexta: () => {
-                        setHoraMinFunc(barbeiro.agendas.sexta[0])
-                        setHoraMaxFunc(barbeiro.agendas.sexta[1])
-                    },
-                    sabado: () => {
-                        setHoraMinFunc(barbeiro.agendas.sabado[0])
-                        setHoraMaxFunc(barbeiro.agendas.sabado[1])
+                    const diasDaSemana = {
+                        domingo: () => {
+                            setHoraMinFunc(barbeiro.agendas.domingo[0])
+                            setHoraMaxFunc(barbeiro.agendas.domingo[1])
+                        },
+                        segunda: () => {
+                            setHoraMinFunc(barbeiro.agendas.segunda[0])
+                            setHoraMaxFunc(barbeiro.agendas.segunda[1])
+                        },
+                        terca: () => {
+                            setHoraMinFunc(barbeiro.agendas.terca[0])
+                            setHoraMaxFunc(barbeiro.agendas.terca[1])
+                        },
+                        quarta: () => {
+                            setHoraMinFunc(barbeiro.agendas.quarta[0])
+                            setHoraMaxFunc(barbeiro.agendas.quarta[1])
+                        },
+                        quinta: () => {
+                            setHoraMinFunc(barbeiro.agendas.quinta[0])
+                            setHoraMaxFunc(barbeiro.agendas.quinta[1])
+                        },
+                        sexta: () => {
+                            setHoraMinFunc(barbeiro.agendas.sexta[0])
+                            setHoraMaxFunc(barbeiro.agendas.sexta[1])
+                        },
+                        sabado: () => {
+                            setHoraMinFunc(barbeiro.agendas.sabado[0])
+                            setHoraMaxFunc(barbeiro.agendas.sabado[1])
+                        }
                     }
+                    diasDaSemana[dayNameSelecionado]()
+                    setValDataAgendamento(true)
                 }
-                diasDaSemana[dayNameSelecionado]()
-                setValDataAgendamento(true)
-            }
-        })
+            })
+        } catch {
+            
+        }
+
     }
 
     const handleChangeHora = event => {
@@ -321,15 +326,16 @@ export default function FormAgendamento(props) {
             barbeariasId: 1
         }
         console.log(agendamento)
-        await axios.post(`http://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
-            // await axios.post(`http://apibarber.vps-kinghost.net:443/api/v1/agendamentos/`, agendamento)
+        // await axios.post(`http://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
+        await axios.post(`http://apibarber.vps-kinghost.net:443/api/v1/agendamentos/`, agendamento)
             .then(res => {
-                // console.log(res);
-                // console.log(res.data);
+                console.log(res);
+                console.log(res.data);
                 navigate('/confirmacao-agendamento')
             })
-            .catch(() => {
+            .catch(res => {
                 console.log('Deu ruim')
+                console.log(res)
             })
     }
 
@@ -481,7 +487,7 @@ export default function FormAgendamento(props) {
 
                 {
                     listaHorariosDisponiveis.length == 0
-                        ? <div className="FormAgendamento-caixa-nenhum-horario"><p>Nenhum horário disponível <br/> nessa data.</p></div>
+                        ? <div className="FormAgendamento-caixa-nenhum-horario"><p>Nenhum horário disponível <br /> nessa data.</p></div>
                         : ''
                 }
 
