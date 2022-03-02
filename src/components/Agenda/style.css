@@ -21,6 +21,12 @@
     border-radius: 5px;
 }
 
+.Agenda-nenhum-agendamento {
+    color: #fff;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
 @media (max-width: 768px) {
     .Agenda-section{
         width: 100%;

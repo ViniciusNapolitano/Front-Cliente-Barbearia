@@ -16,10 +16,14 @@ export default function Agenda(props) {
         })
     }
 
-    return(
+    return (
         <section className='Agenda-section'>
             <div className='Agenda-esteira-agendamentos'>
-                {listarCards()}
+                {
+                    listarCards().length == 0
+                        ? <p className='Agenda-nenhum-agendamento'>Nenhum agendamento marcado.</p>
+                        : listarCards()
+                }
             </div>
         </section>
     )

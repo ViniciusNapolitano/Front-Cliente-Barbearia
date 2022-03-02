@@ -169,6 +169,12 @@ li {
     color: #515151;
 }
 
+.FormAgendamento-caixa-nenhum-horario {
+    background-color: #B78865;
+    color: #fff;
+    text-align: center;
+}
+
 @media (max-width: 768px) {
     .FormAgendamento-section {
         padding: 82px 0 64px 0;

@@ -58,6 +58,10 @@ export default function FormAgendamento(props) {
 
     const [buttonBloqueado, setButtonBloqueado] = useState(true)
 
+    const [listaVazia, setListaVazia] = useState(false)
+
+    let listaHorariosDisponiveis = []
+
     let agendamentoDia
     let horaAgendamento
     let listaHoraAgendamento = []
@@ -262,7 +266,7 @@ export default function FormAgendamento(props) {
     }
 
     const regrasNegocioHorariosDisponivei = () => {
-        let listaHorariosDisponiveis = []
+        listaHorariosDisponiveis = []
         let horarioFormatado
 
         // Regra 1: Não é permitido horários fora do expediente
@@ -282,6 +286,9 @@ export default function FormAgendamento(props) {
 
         // Regra 4: Não é permitido horáruios que não cabem a duração do serviço
         listaHorariosDisponiveis = valDuracaoServico(listaHorariosDisponiveis, tempoServico.slice(11, 16))
+
+        if (listaHorariosDisponiveis.length == 0)
+            return
 
         return listaHorariosDisponiveis.map(horario => {
             horarioFormatado = formataLayoutHora1(horario)
@@ -465,13 +472,20 @@ export default function FormAgendamento(props) {
                     : ''
                 }
 
-
                 <div className="FormAgendamento-bt-horarios-disponiveis">
                     {
                         valDataAgendamento ? regrasNegocioHorariosDisponivei()
                             : ''
                     }
                 </div>
+
+                {
+                    listaHorariosDisponiveis.length == 0
+                        ? <div className="FormAgendamento-caixa-nenhum-horario"><p>Nenhum horário disponível <br/> nessa data.</p></div>
+                        : ''
+                }
+
+
 
                 <label className="FormAgendamento-espacamento">Nome:</label>
                 <input type="text"
