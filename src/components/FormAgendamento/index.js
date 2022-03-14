@@ -326,8 +326,8 @@ export default function FormAgendamento(props) {
             barbeariasId: 1
         }
         console.log(agendamento)
-        // await axios.post(`http://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
-        await axios.post(`http://apibarber.vps-kinghost.net:443/api/v1/agendamentos/`, agendamento)
+        await axios.post(`http://mybarberapi.herokuapp.com/api/v1/agendamentos/`, agendamento)
+        // await axios.post(`http://apibarber.vps-kinghost.net:443/api/v1/agendamentos/`, agendamento)
             .then(res => {
                 console.log(res);
                 console.log(res.data);

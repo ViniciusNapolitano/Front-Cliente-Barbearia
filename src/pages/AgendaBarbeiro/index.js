@@ -82,10 +82,14 @@ export default function AgendaBarbeiro() {
 
         return barbearia.servicos.map(servico => {
             return servico.servicosBarbeiros.map(barbeiro => {
-                if (!listaBarbeiros.includes(barbeiro.barbeiros.nameBarbeiro)) {
-                    listaBarbeiros.push(barbeiro.barbeiros.nameBarbeiro)
-                    return <option key={barbeiro.barbeiros.idBarbeiro} value={barbeiro.barbeiros.nameBarbeiro}>{barbeiro.barbeiros.nameBarbeiro}</option>
-                }
+                if (window.localStorage.getItem('barbeiro') == barbeiro.barbeiros.nameBarbeiro)
+                    return <option selected key={barbeiro.barbeiros.idBarbeiro} value={window.localStorage.getItem('barbeiro')}>{window.localStorage.getItem('barbeiro')}</option>
+
+                // if (!listaBarbeiros.includes(barbeiro.barbeiros.nameBarbeiro)) {
+                //     listaBarbeiros.push(barbeiro.barbeiros.nameBarbeiro)
+                //     return <option key={barbeiro.barbeiros.idBarbeiro} value={barbeiro.barbeiros.nameBarbeiro}>{barbeiro.barbeiros.nameBarbeiro}</option>
+                    // return <option selected key={barbeiro.barbeiros.idBarbeiro} value={window.localStorage.getItem('barbeiro')}>{window.localStorage.getItem('barbeiro')}</option>
+                // }
             })
         })
     }
@@ -167,7 +171,7 @@ export default function AgendaBarbeiro() {
                     <input type='date' value={dataFormatada} onChange={handleChangeData} className='AgendaBarbeiro-input-data'></input>
 
                     <select name="select" onChange={handleChangeBarbeiro} className="AgendaBarbeiro-select">
-                        <option key="0" value="0">Selecionar</option>
+                        {/* <option key="0" value="0">Selecionar</option> */}
                         {
                             barbearia != '' ?
 
